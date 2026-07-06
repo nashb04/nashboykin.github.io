@@ -1,0 +1,81 @@
+baseURL = 'https://nashb04.github.io/nashboykin.github.io/'
+locale = 'en-us'
+title = 'Stars on Earth'
+theme = 'PaperMod'
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+pygmentsUseClasses = true
+
+[minify]
+  disableXML = true
+
+[params]
+  env = 'production'
+  title = 'Stars on Earth'
+  description = 'Stars on Earth — a blog by Nash Boykin'
+  keywords = ['blog', 'stars on earth', 'nash boykin']
+  author = 'Nash Boykin'
+  DateFormat = 'January 2, 2006'
+  defaultTheme = 'auto'
+  disableThemeToggle = false
+  ShowShareButtons = false
+  ShowReadingTime = true
+  displayFullLangName = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  ShowToc = true
+  TocOpen = false
+  comments = false
+  hidemeta = false
+
+  [params.homeInfoParams]
+    Title = 'Stars on Earth'
+    Content = 'Welcome — this is where I write about the things worth writing down.'
+
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/nashb04'
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[[menu.main]]
+  identifier = 'posts'
+  name = 'Posts'
+  url = '/posts/'
+  weight = 10
+
+[[menu.main]]
+  identifier = 'about'
+  name = 'About'
+  url = '/about/'
+  weight = 20
+
+[[menu.main]]
+  identifier = 'search'
+  name = 'Search'
+  url = '/search/'
+  weight = 30
+
+[[menu.main]]
+  identifier = 'tags'
+  name = 'Tags'
+  url = '/tags/'
+  weight = 40
+
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+
+[markup.highlight]
+  noClasses = false
+  codeFences = true
+  guessSyntax = true
+  lineNos = false
+  style = 'monokai'
