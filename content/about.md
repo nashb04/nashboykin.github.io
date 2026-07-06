@@ -10,9 +10,9 @@ ShowWordCount: false
 hidemeta: true
 ---
 
-{{< figure src="../images/tokamak.jpg" alt="Interior of the Alcator C-Mod tokamak at MIT" caption="Inside the Alcator C-Mod tokamak at MIT. Photo by [Mike Garrett](https://commons.wikimedia.org/wiki/File:Alcator_C-Mod_Tokamak_Interior.jpg), CC BY 3.0." >}}
+{{< figure src="../images/nash.jpg" alt="Nash Boykin at Duke graduation" width="450" >}}
 
-Hi, I'm Nash. I'm a student at Duke's Fuqua School of Business, and I spend an unreasonable amount of my free time thinking about fusion energy — hence the tokamak.
+Hi, I'm Nash. I just graduated from Duke with degrees in economics and computer science, and I'm sticking around Durham for a joint master's at Fuqua and the Nicholas School, at the intersection of business, climate, and sustainability. I also spend an unreasonable amount of my free time thinking about fusion energy.
 
 **Stars on Earth** is where I keep track of two things:
 

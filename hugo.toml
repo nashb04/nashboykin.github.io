@@ -35,7 +35,7 @@ pygmentsUseClasses = true
   hidemeta = false
 
   [params.homeInfoParams]
-    Title = 'Stars on Earth ✨'
+    Title = 'Stars on Earth ✦'
     Content = "Field notes on the remarkable people I meet and the best things I read — with a recurring soft spot for fusion energy. [More about me →](about/)"
 
   [[params.socialIcons]]
