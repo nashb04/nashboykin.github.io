@@ -1,0 +1,43 @@
+/* --- images: center figures, soften corners --- */
+.post-content figure {
+    text-align: center;
+    margin: 24px auto;
+}
+
+.post-content figure img {
+    display: inline-block;
+    border-radius: 12px;
+}
+
+.post-content figure figcaption {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--secondary);
+}
+
+/* --- about-page headshot: portrait crop, border, shadow --- */
+figure.headshot img {
+    width: min(320px, 85%);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 20%;
+    border: 3px solid var(--border);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+}
+
+/* --- home info: a little breathing room --- */
+.home-info .entry-content {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* --- post cards: subtle lift on hover --- */
+.post-entry {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.post-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}

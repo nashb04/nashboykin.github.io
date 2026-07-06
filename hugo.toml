@@ -35,8 +35,8 @@ pygmentsUseClasses = true
   hidemeta = false
 
   [params.homeInfoParams]
-    Title = 'Stars on Earth ✦'
-    Content = "Field notes on the remarkable people I meet and the best things I read — with a recurring soft spot for fusion energy. [More about me →](about/)"
+    Title = 'Stars on Earth'
+    Content = "Field notes on the remarkable people I meet and the best things I read — with a recurring soft spot for fusion energy. [More about me&nbsp;→](about/)"
 
   [[params.socialIcons]]
     name = 'linkedin'
@@ -78,12 +78,6 @@ pygmentsUseClasses = true
   name = 'Search'
   url = '/search/'
   weight = 30
-
-[[menu.main]]
-  identifier = 'tags'
-  name = 'Tags'
-  url = '/tags/'
-  weight = 40
 
 [taxonomies]
   tag = 'tags'

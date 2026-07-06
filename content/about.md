@@ -10,7 +10,7 @@ ShowWordCount: false
 hidemeta: true
 ---
 
-{{< figure src="../images/nash.jpg" alt="Nash Boykin at Duke graduation" width="450" >}}
+{{< figure src="../images/nash.jpg" alt="Nash Boykin at Duke graduation" class="headshot" >}}
 
 Hi, I'm Nash. I just graduated from Duke with degrees in economics and computer science, and I'm sticking around Durham for a joint master's at Fuqua and the Nicholas School, at the intersection of business, climate, and sustainability. I also spend an unreasonable amount of my free time thinking about fusion energy.
 
