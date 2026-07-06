@@ -16,8 +16,8 @@ pygmentsUseClasses = true
 [params]
   env = 'production'
   title = 'Stars on Earth'
-  description = 'Stars on Earth — a blog by Nash Boykin'
-  keywords = ['blog', 'stars on earth', 'nash boykin']
+  description = 'Stars on Earth — Nash Boykin on remarkable people, good reads, and fusion energy'
+  keywords = ['blog', 'stars on earth', 'nash boykin', 'fusion', 'duke', 'fuqua']
   author = 'Nash Boykin'
   DateFormat = 'January 2, 2006'
   defaultTheme = 'auto'
@@ -35,11 +35,27 @@ pygmentsUseClasses = true
   hidemeta = false
 
   [params.homeInfoParams]
-    Title = 'Stars on Earth'
-    Content = 'Welcome — this is where I write about the things worth writing down.'
+    Title = 'Stars on Earth ✨'
+    Content = "Field notes on the remarkable people I meet and the best things I read — with a recurring soft spot for fusion energy. [More about me →](about/)"
+
+  [[params.socialIcons]]
+    name = 'linkedin'
+    title = 'LinkedIn'
+    url = 'https://www.linkedin.com/in/cnb45/'
+
+  [[params.socialIcons]]
+    name = 'email'
+    title = 'Email me'
+    url = 'mailto:cnb45@duke.edu'
+
+  [[params.socialIcons]]
+    name = 'cv'
+    title = 'Resume'
+    url = 'cnb_resume.pdf'
 
   [[params.socialIcons]]
     name = 'github'
+    title = 'GitHub'
     url = 'https://github.com/nashb04'
 
 [outputs]
