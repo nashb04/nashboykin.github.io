@@ -53,11 +53,6 @@ pygmentsUseClasses = true
     title = 'Resume'
     url = 'cnb_resume.pdf'
 
-  [[params.socialIcons]]
-    name = 'github'
-    title = 'GitHub'
-    url = 'https://github.com/nashb04'
-
 [outputs]
   home = ['HTML', 'RSS', 'JSON']
 

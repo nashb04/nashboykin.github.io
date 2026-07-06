@@ -26,7 +26,12 @@ figure.headshot img {
     border-radius: 16px;
 }
 
-/* --- home info: a little breathing room --- */
+/* --- home info: a little breathing room, but not a chasm before the posts --- */
+.first-entry.home-info {
+    min-height: unset;
+    margin: 24px 0 28px 0;
+}
+
 .home-info .entry-content {
     font-size: 16px;
     line-height: 1.7;
