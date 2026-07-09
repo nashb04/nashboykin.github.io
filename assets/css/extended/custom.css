@@ -58,7 +58,7 @@ figure.headshot img {
     line-height: 1.7;
 }
 
-/* --- "Now" block inside the home intro --- */
+/* --- "Now" block inside the home intro (centered) --- */
 .home-info .entry-content h4 {
     margin: 18px 0 8px;
     font-size: 12px;
@@ -66,6 +66,7 @@ figure.headshot img {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--secondary);
+    text-align: center;
 }
 
 .home-info .entry-content ul {
@@ -76,6 +77,20 @@ figure.headshot img {
     flex-direction: column;
     gap: 6px;
     font-size: 15px;
+    align-items: center;
+    text-align: center;
+}
+
+/* --- separator lines in the home intro --- */
+.home-info .entry-content hr {
+    border: 0;
+    height: 1px;
+    margin: 16px 0;
+    background: var(--border);
+}
+
+[data-theme="dark"] .home-info .entry-content hr {
+    background: rgba(255, 255, 255, 0.35);
 }
 
 /* --- starfield behind the home intro (white stars, dark mode only) --- */
