@@ -12,16 +12,16 @@ hidemeta: true
 
 {{< figure src="../images/nash.jpg" alt="Nash Boykin at Duke graduation" class="headshot" >}}
 
-Hi, I'm Nash. I just graduated from Duke with degrees in economics and computer science, and I'm sticking around Durham for a joint master's at Fuqua and the Nicholas School, at the intersection of business, climate, and sustainability. I also spend an unreasonable amount of my free time thinking about fusion energy.
+Hi, I'm Nash. I just graduated from Duke with degrees in economics and computer science, and I'm sticking around Durham for a joint master's at Fuqua and the Nicholas School, at the intersection of business, climate, and sustainability. I also spend a good amount of my free time thinking about fusion energy.
 
 **Stars on Earth** is where I keep track of two things:
 
-- **Cool people.** Profiles and notes from conversations with people doing interesting work.
-- **Cool ideas.** The books, papers, and essays that stuck with me enough to write about.
+- **Conversations.** What I've learned from the people building this industry, one call at a time.
+- **Analysis.** LCOE models, supply chain breakdowns, and other projects digging into the economics of fusion.
 
 The name is a nod to what a fusion reactor actually is: a star, held together on Earth.
 
-## Say hello
+## Say hello:
 
 - [LinkedIn](https://www.linkedin.com/in/cnb45/)
 - [cnb45@duke.edu](mailto:cnb45@duke.edu)
