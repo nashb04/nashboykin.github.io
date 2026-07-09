@@ -10,7 +10,9 @@ cover:
 ---
 
 Amit Singh, CEO of NearStar Fusion, recently took the time to walk me through the world of inertial fusion versus magnetic fusion. At one point I told him that the last person I'd told about wanting to work in fusion had laughed at me. He didn't laugh. Instead, he talked about working for a purpose, not a salary. That's stuck with me since, and it's got me thinking back on how I actually landed here in the first place.
-Two semesters before graduating, I realized I needed more graduate-level courses to hit the requirements for the +1 program. So when I was scrolling through options and found Dr. Chris Wedding's Fuqua course on ESG investing, I actually got pretty excited. 
+
+Two semesters before graduating, I realized I needed more graduate-level courses to hit the requirements for the +1 program. So when I was scrolling through options and found Dr. Chris Wedding's Fuqua course on ESG investing, I actually got pretty excited.
+
 I had considered writing my honors thesis on ESG investing. I'd been part of Duke Impact Investing. I'd dabbled in the finance world during my summer abroad in London. But I was always confident I'd end up pursuing a PhD in economics. I didn't have corporate experience, I didn't know the finance lingo, and I certainly lacked Excel expertise. I figured I wouldn't exactly fit right in, but the class was worth it for fewer hard exams and a topic I knew I was at least a little interested in.
 
 Exactly one semester later, I was applying to Fuqua's Master in Business, Climate, and Sustainability program’s inaugural class. I'd chosen to take a 180-degree pivot away from the PhD track and onto a new path that would get a lot more people laughing at me: fusion.
