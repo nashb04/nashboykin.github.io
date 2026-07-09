@@ -34,22 +34,9 @@ pygmentsUseClasses = true
   comments = false
   hidemeta = false
 
-  [params.profileMode]
-    enabled = true
-    title = 'Stars on Earth'
-    subtitle = "I'm Nash. Field notes from conversations with the people building fusion, and analysis of the economics behind it."
-    imageUrl = 'images/nash_square.jpg'
-    imageTitle = 'Nash Boykin'
-    imageWidth = 160
-    imageHeight = 160
-
-    [[params.profileMode.buttons]]
-      name = 'Posts'
-      url = 'posts'
-
-    [[params.profileMode.buttons]]
-      name = 'About'
-      url = 'about'
+  [params.homeInfoParams]
+    Title = 'Stars on Earth'
+    Content = "Field notes on the remarkable people I meet and the ideas worth digging into, with a recurring soft spot for fusion energy. [More about me&nbsp;→](about/)"
 
   [[params.socialIcons]]
     name = 'linkedin'
