@@ -13,4 +13,33 @@
         {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
     </footer>
 </article>
+<script>
+    (function () {
+        var star = document.querySelector(".shooting-star");
+        if (!star || !star.animate) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var box = star.parentElement;
+
+        function shoot() {
+            if (document.documentElement.dataset.theme === "dark") {
+                var w = box.clientWidth, h = box.clientHeight;
+                var startX = Math.random() * w * 0.5;
+                var startY = Math.random() * h * 0.55;
+                var angle = 6 + Math.random() * 22;
+                var rad = angle * Math.PI / 180;
+                var dist = 240 + Math.random() * w * 0.4;
+                star.style.left = startX + "px";
+                star.style.top = startY + "px";
+                star.animate([
+                    { transform: "translate(0,0) rotate(" + angle + "deg)", opacity: 0 },
+                    { opacity: 0.7, offset: 0.15 },
+                    { transform: "translate(" + Math.cos(rad) * dist + "px," + Math.sin(rad) * dist + "px) rotate(" + angle + "deg)", opacity: 0 }
+                ], { duration: 750 + Math.random() * 450, easing: "ease-out" });
+            }
+            setTimeout(shoot, 9000 + Math.random() * 9000);
+        }
+
+        setTimeout(shoot, 2500 + Math.random() * 3000);
+    })();
+</script>
 {{- end -}}
