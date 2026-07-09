@@ -36,13 +36,16 @@ pygmentsUseClasses = true
 
   [params.homeInfoParams]
     Title = 'Stars on Earth'
-    Content = "Field notes on the remarkable people I meet and the ideas worth digging into, with a recurring soft spot for fusion energy. [More about me&nbsp;→](about/)"
-    NowContent = """
+    Content = """
+Field notes on the remarkable people I meet and the ideas worth digging into, with a recurring soft spot for fusion energy.
+
 #### Now
 
 - **Currently digging into:** a supply chain map of the fusion industry
 - **Recent conversation:** Amit Singh, NearStar Fusion
 - **Next up:** LCOE modeling for fusion
+
+[More about me&nbsp;→](about/)
 """
 
   [[params.socialIcons]]
