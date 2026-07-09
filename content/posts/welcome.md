@@ -4,9 +4,8 @@ date: 2026-07-06T09:00:00-04:00
 draft: false
 tags: ["meta"]
 cover:
-  image: "images/tokamak.jpg"
-  alt: "Interior of the Alcator C-Mod tokamak at MIT"
-  caption: "Inside MIT's Alcator C-Mod tokamak. Photo by Mike Garrett, CC BY 3.0."
+  image: "images/fusion3.png"
+  alt: "Atom icon"
 ---
 
 Amit Singh, CEO of NearStar Fusion, recently took the time to walk me through the world of inertial fusion versus magnetic fusion. At one point I told him that the last person I'd told about wanting to work in fusion had laughed at me. He didn't laugh. Instead, he talked about working for a purpose, not a salary. That's stuck with me since, and it's got me thinking back on how I actually landed here in the first place.
