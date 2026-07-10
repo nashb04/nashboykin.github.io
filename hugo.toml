@@ -19,6 +19,9 @@ pygmentsUseClasses = true
   title = 'Stars on Earth'
   images = ['images/og-card.png']
 
+  [params.label]
+    text = 'Nash Boykin | Stars on Earth'
+
   [params.assets]
     favicon = 'favicon-32.png'
     favicon16x16 = 'favicon-16.png'
