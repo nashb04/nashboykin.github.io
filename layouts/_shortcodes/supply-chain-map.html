@@ -1,0 +1,184 @@
+<div class="fscm" id="fscm">
+    <div class="fscm-stages">
+        <section class="fscm-stage">
+            <h5>Raw materials</h5>
+            <div class="fscm-nodes">
+                <button class="fscm-node" data-id="lithium" type="button">Lithium &amp; enrichment</button>
+                <button class="fscm-node" data-id="hts" type="button">HTS tape (REBCO)</button>
+                <button class="fscm-node" data-id="tungsten" type="button">Tungsten &amp; specialty metals</button>
+                <button class="fscm-node" data-id="helium" type="button">Helium &amp; cryogens</button>
+            </div>
+        </section>
+        <section class="fscm-stage">
+            <h5>Components &amp; systems</h5>
+            <div class="fscm-nodes">
+                <button class="fscm-node" data-id="magnets" type="button">Superconducting magnets</button>
+                <button class="fscm-node" data-id="power" type="button">Power systems &amp; electronics</button>
+                <button class="fscm-node" data-id="heat" type="button">Heat management</button>
+                <button class="fscm-node" data-id="vacuum" type="button">Vacuum vessels &amp; pumps</button>
+                <button class="fscm-node" data-id="firstwall" type="button">First wall &amp; blanket</button>
+                <button class="fscm-node" data-id="fuelcycle" type="button">Fuel cycle systems</button>
+                <button class="fscm-node" data-id="drivers" type="button">Lasers, drivers &amp; heating</button>
+                <button class="fscm-node" data-id="diagnostics" type="button">Diagnostics &amp; controls</button>
+            </div>
+        </section>
+        <section class="fscm-stage">
+            <h5>Plant &amp; integration</h5>
+            <div class="fscm-nodes">
+                <button class="fscm-node" data-id="integration" type="button">Engineering &amp; construction</button>
+                <button class="fscm-node" data-id="pilots" type="button">Pilot plants</button>
+            </div>
+        </section>
+    </div>
+    <div class="fscm-panel" aria-live="polite">
+        <div class="fscm-panel-head">
+            <h6 class="fscm-title"></h6>
+            <span class="fscm-badge"></span>
+        </div>
+        <p class="fscm-desc"></p>
+        <div class="fscm-meter" hidden>
+            <div class="fscm-meter-track"><div class="fscm-meter-fill"></div></div>
+            <span class="fscm-meter-label"></span>
+        </div>
+        <p class="fscm-players"></p>
+    </div>
+</div>
+
+<script>
+(function () {
+    var data = {
+        lithium: {
+            title: "Lithium & enrichment",
+            badge: "Upstream input",
+            desc: "Fusion's fuel chain starts here: lithium breeds tritium when struck by fusion neutrons. Raw lithium is abundant, but lithium-6 enrichment capacity is scarce — most of it historically built for weapons programs, not energy. Approaches that work with natural lithium, like First Light's liquid-lithium FLARE concept, sidestep that choke point entirely.",
+            players: "Raw supply runs through the big producers (Albemarle, SQM); enrichment is the thin part of the chain."
+        },
+        hts: {
+            title: "HTS tape (REBCO)",
+            badge: "Upstream input",
+            desc: "High-temperature superconducting tape is what makes compact, high-field magnets possible — and a single tokamak can consume thousands of kilometers of it. Global production has scaled fast in the last five years, driven almost entirely by fusion demand.",
+            players: "Faraday Factory, Fujikura, SuperPower, and Shanghai Superconductor are among the names that come up most."
+        },
+        tungsten: {
+            title: "Tungsten & specialty metals",
+            badge: "Future concern",
+            stat: 40,
+            statLabel: "of fusion companies flag extreme-condition materials as a future constraint (FIA 2026)",
+            desc: "The parts of the machine that face the plasma take a beating no other industry demands: heat fluxes higher than a rocket nozzle, plus neutron bombardment. Tungsten and specialty steels that survive those conditions have few qualified suppliers.",
+            players: "Plansee is the tungsten name everyone cites; ITER-grade steel capacity is similarly concentrated."
+        },
+        helium: {
+            title: "Helium & cryogens",
+            badge: "Upstream input",
+            desc: "Superconducting magnets need serious cryogenics, and helium is a notoriously volatile commodity with a supply chain fusion doesn't control. Cryoplant capacity itself — the hardware that keeps magnets cold — is also a long-lead item.",
+            players: "Industrial gas majors (Linde, Air Liquide, Air Products) on the helium side; a handful of cryoplant builders on the hardware side."
+        },
+        magnets: {
+            title: "Superconducting magnets",
+            badge: "Mostly in-house",
+            desc: "The signature component of magnetic fusion — and telling: most companies build their own, because no merchant supplier exists yet at the field strengths they need. That's a gap in the supply chain wearing a costume as vertical integration.",
+            players: "CFS and Tokamak Energy build in-house; Tokamak Energy also sells magnet technology outward, an early sign of a merchant market forming."
+        },
+        power: {
+            title: "Power systems & electronics",
+            badge: "Current constraint",
+            stat: 48,
+            statLabel: "of fusion companies report constraints today (FIA 2026)",
+            desc: "The least glamorous, most binding constraint in the 2026 FIA survey. Pulsed-power supplies, converters, and switchgear at fusion scale compete for the same manufacturing capacity as grid upgrades, data centers, and EVs — and fusion is the smallest customer at the table.",
+            players: "Grid-scale names (ABB, Siemens Energy, Hitachi Energy) plus a small bench of pulsed-power specialists."
+        },
+        heat: {
+            title: "Heat management",
+            badge: "Current constraint",
+            stat: 44,
+            statLabel: "of fusion companies report constraints today (FIA 2026)",
+            desc: "Getting gigawatts of heat out of a machine the size of a house is its own engineering discipline: divertors, cooling loops, and heat exchangers operating at the edge of materials science.",
+            players: "Overlaps heavily with the tungsten and specialty-metals bench — which is part of why both show up as constraints."
+        },
+        vacuum: {
+            title: "Vacuum vessels & pumps",
+            badge: "Current constraint",
+            stat: 32,
+            statLabel: "of fusion companies report constraints today (FIA 2026)",
+            desc: "Every fusion concept needs an exquisitely clean vacuum, and the vessels are enormous precision weldments that only a few shops in the world can fabricate. Pumps are a parallel 32% constraint in the FIA data.",
+            players: "Leybold, Pfeiffer, Edwards, and Agilent on pumps; vessel fabrication is the thinner bench."
+        },
+        firstwall: {
+            title: "First wall & blanket",
+            badge: "Future concern",
+            stat: 40,
+            statLabel: "of fusion companies flag first-wall materials as a future constraint (FIA 2026)",
+            desc: "The blanket does double duty: it captures the energy of the reaction and breeds new tritium fuel. It's the least mature major system in fusion — nobody has operated a breeding blanket at power-plant scale.",
+            players: "Largely still lab territory; First Light's liquid-lithium bath is one attempt to make the blanket radically simpler."
+        },
+        fuelcycle: {
+            title: "Fuel cycle systems",
+            badge: "Future concern",
+            stat: 48,
+            statLabel: "of fusion companies name fuel cycle as a major future concern (FIA 2026)",
+            desc: "The systems that produce, capture, separate, and re-inject fusion fuel. The world's entire tritium inventory is roughly 20 kg, essentially all from Canadian CANDU reactors, and it sells for $30,000–$40,000 a gram. Whoever solves breeding at scale isn't just supplying themselves — they're sitting on a fuel business.",
+            players: "Kyoto Fusioneering is building the merchant fuel-cycle bench; First Light validated a tritium breeding ratio of 1.8 with a projected 25 kg annual surplus per plant."
+        },
+        drivers: {
+            title: "Lasers, drivers & heating",
+            badge: "Concept-specific",
+            desc: "Inertial and projectile approaches need drivers — lasers, pulsed power, or launchers — while magnetic approaches need plasma heating systems like gyrotrons and neutral beams. Each is a deep specialty with a short supplier list.",
+            players: "Trumpf and Amplitude on high-rep-rate lasers; gyrotrons run through a handful of shops worldwide."
+        },
+        diagnostics: {
+            title: "Diagnostics & controls",
+            badge: "Maturing",
+            desc: "Hundreds of sensors and real-time control systems keep a plasma alive. Historically built one-off by national labs; turning that into a product catalog is a quiet but real commercialization frontier.",
+            players: "Kyoto Fusioneering again, plus instrumentation firms crossing over from accelerators and space."
+        },
+        integration: {
+            title: "Engineering & construction",
+            badge: "Scaling now",
+            desc: "Somebody has to actually build these plants: nuclear-grade EPC firms, licensing consultants, and site developers. The FIA reports 75% of surveyed suppliers invested in expanding fusion capacity this year — from $30k tooling upgrades to $65M facilities.",
+            players: "The nuclear EPC world (Bechtel, AtkinsRéalis, Framatome) is circling; UKAEA partnerships anchor the UK cluster."
+        },
+        pilots: {
+            title: "Pilot plants",
+            badge: "The demand signal",
+            desc: "Everything upstream exists to serve this box. Pilot plants under construction are what turn the supply chain from speculative to real: $538M of supplier spend in 2025, projected to hit $681M in 2026.",
+            players: "CFS (SPARC, then ARC in Virginia), Helion's Microsoft-backed plant, and First Light's FLARE concept among the front-runners."
+        }
+    };
+
+    var root = document.getElementById("fscm");
+    if (!root) return;
+    var titleEl = root.querySelector(".fscm-title");
+    var badgeEl = root.querySelector(".fscm-badge");
+    var descEl = root.querySelector(".fscm-desc");
+    var meterEl = root.querySelector(".fscm-meter");
+    var fillEl = root.querySelector(".fscm-meter-fill");
+    var meterLabel = root.querySelector(".fscm-meter-label");
+    var playersEl = root.querySelector(".fscm-players");
+    var buttons = root.querySelectorAll(".fscm-node");
+
+    function select(id) {
+        var d = data[id];
+        if (!d) return;
+        titleEl.textContent = d.title;
+        badgeEl.textContent = d.badge;
+        descEl.textContent = d.desc;
+        playersEl.textContent = d.players;
+        if (d.stat) {
+            meterEl.hidden = false;
+            fillEl.style.width = d.stat + "%";
+            meterLabel.textContent = d.stat + "% " + d.statLabel;
+        } else {
+            meterEl.hidden = true;
+        }
+        buttons.forEach(function (b) {
+            b.setAttribute("aria-pressed", b.dataset.id === id ? "true" : "false");
+        });
+    }
+
+    buttons.forEach(function (b) {
+        b.addEventListener("click", function () { select(b.dataset.id); });
+    });
+
+    select("fuelcycle");
+})();
+</script>

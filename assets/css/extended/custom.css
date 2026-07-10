@@ -182,6 +182,135 @@ figure.headshot img {
     }
 }
 
+/* --- fusion supply chain map --- */
+.fscm {
+    margin: 28px 0;
+}
+
+.fscm-stages {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 640px) {
+    .fscm-stages {
+        grid-template-columns: 1fr;
+    }
+}
+
+.fscm-stage h5 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+}
+
+.fscm-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fscm-node {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    line-height: 1.35;
+    text-align: left;
+    color: var(--content);
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.fscm-node:hover {
+    border-color: var(--secondary);
+    transform: translateX(2px);
+}
+
+.fscm-node[aria-pressed="true"] {
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+.fscm-panel {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.fscm-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.fscm-title {
+    margin: 0;
+    font-size: 17px;
+}
+
+.fscm-badge {
+    padding: 2px 10px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.fscm-desc {
+    margin: 10px 0 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--content);
+}
+
+.fscm-meter {
+    margin-top: 12px;
+}
+
+.fscm-meter-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.fscm-meter-fill {
+    height: 100%;
+    width: 0;
+    background: var(--content);
+    border-radius: 4px;
+    transition: width 0.25s ease;
+}
+
+.fscm-meter-label {
+    display: block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--secondary);
+}
+
+.fscm-players {
+    margin: 12px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--secondary);
+}
+
 /* --- post cards: subtle lift on hover --- */
 .post-entry {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
