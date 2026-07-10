@@ -8,7 +8,7 @@ cover:
   alt: "Broken supply chain icon"
 ---
 
-Two weeks ago the Fusion Industry Association put out its [2026 supply chain report](https://www.fusionindustryassociation.org/fia-launches-2026-fusion-industry-supply-chain-report/), launched at the first-ever fusion supply chain trade show in New Mexico. The headline numbers: fusion companies spent $538 million with suppliers in 2025, up 24%, and project $681 million this year. Three quarters of surveyed suppliers invested in expanding fusion capacity, anywhere from $30k tooling upgrades to $65 million facilities.
+A few weeks ago the Fusion Industry Association put out its [2026 supply chain report](https://www.fusionindustryassociation.org/fia-launches-2026-fusion-industry-supply-chain-report/), launched at the first-ever fusion supply chain trade show in New Mexico. The headline numbers: fusion companies spent $538 million with suppliers in 2025, up 24%, and project $681 million this year. Three quarters of surveyed suppliers invested in expanding fusion capacity in 2025, anywhere from $30k tooling upgrades to $65 million facilities.
 
 That's real money moving through a supply chain most people don't know exists. So I tried to map it.
 
@@ -26,7 +26,7 @@ But the number that actually matters is the forward-looking one: 48% of fusion c
 
 When I spoke with David Bryon at First Light Fusion, the thing that stuck with me was how far ahead they are on breeding, and what that's worth. In February, First Light [validated a tritium breeding ratio of 1.8](https://firstlightfusion.com/media/first-light-fusion-validates-high-tritium-breeding-performance-of-flare-concept-addressing-key-barrier-to-fusion-energy-scale-up/) for their FLARE concept, the highest reported to date, using a liquid bath of plain natural lithium. At the design point, one plant would generate a **25 kg annual tritium surplus**.
 
-Here's why that's wild. The entire global tritium inventory is about 20 kg, essentially all of it a byproduct of Canadian CANDU fission reactors, and it sells for [$30,000 to $40,000 a gram](https://www.science.org/content/article/fusion-power-may-run-fuel-even-gets-started). Run the naive math on a 25 kg surplus at today's prices and one plant's *fuel byproduct* is worth $750 million to $1 billion a year. Every other fusion company that reaches commercial scale needs startup tritium from somewhere.
+Here's why that's wild. The world's civilian tritium inventory is about 20 kg, essentially all of it a byproduct of CANDU fission reactors (mostly in Canada), and it sells for [$30,000 to $40,000 a gram](https://www.science.org/content/article/fusion-power-may-run-fuel-even-gets-started). Run the naive math on a 25 kg surplus at today's prices and one plant's *fuel byproduct* is worth $750 million to $1 billion a year. Every other fusion company that reaches commercial scale needs startup tritium from somewhere.
 
 Obviously the naive math is naive: if breeding works at scale, the price collapses. That's the point. But in the window where most of the industry needs tritium and almost nobody has surplus, making fuel isn't a subsystem. It's its own business, the way enriched uranium became its own industry decades before anyone called it a supply chain.
 
