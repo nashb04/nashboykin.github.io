@@ -245,15 +245,19 @@
         return "$" + v.toFixed(v < 100 ? 1 : 0);
     }
 
+    function infoBtnHtml(id) {
+        return '<button class="lcoe-info-btn" type="button" data-tip-id="' + id + '" aria-expanded="false" aria-label="What is this?">?</button>';
+    }
+
     function renderBars(lcoe) {
         var refs = [
-            { label: "Hawker optimistic", value: 25 },
-            { label: "Onshore wind", value: 62 },
-            { label: "LLNL LIFE estimate", value: 91 },
-            { label: "New nuclear", value: 181 }
+            { id: "bar-hawker", label: "Hawker optimistic", value: 25, tip: "The $25/MWh floor from Hawker's own published best-case scenario, matching the “Hawker's optimistic case” preset above: high gain, low rep rate, cheap financing." },
+            { id: "bar-wind", label: "Onshore wind", value: 62, tip: "Midpoint of Lazard's June 2025 unsubsidized cost range for newly built onshore wind farms in the US ($37-86/MWh) — today's cheap, real, buildable baseline." },
+            { id: "bar-life", label: "LLNL LIFE estimate", value: 91, tip: "LLNL's own reported cost projection (9.1 cents/kWh) for the laser fusion plant design this calculator's default preset is built on — see “Where the numbers come from” below." },
+            { id: "bar-nuclear", label: "New nuclear", value: 181, tip: "Midpoint of Lazard's June 2025 unsubsidized cost range for a newly built nuclear plant ($141-220/MWh) — the standard baseload comparison, and fusion's most common point of comparison." }
         ];
         if (lcoe !== null) {
-            refs.push({ label: "This design", value: lcoe, highlight: true });
+            refs.push({ id: "bar-current", label: "This design", value: lcoe, highlight: true, tip: "Whatever the sliders below are currently set to. This bar moves live as you drag them." });
         }
         refs.sort(function (a, b) { return a.value - b.value; });
         var max = Math.max.apply(null, refs.map(function (r) { return r.value; })) * 1.15;
@@ -263,28 +267,38 @@
             var row = document.createElement("div");
             row.className = "lcoe-bar-row" + (r.highlight ? " is-current" : "");
             row.innerHTML =
-                '<span class="lcoe-bar-label">' + r.label + '</span>' +
+                '<span class="lcoe-bar-label">' + r.label + infoBtnHtml(r.id) + '</span>' +
                 '<div class="lcoe-bar-track"><div class="lcoe-bar-fill" style="width:' + Math.min(100, (r.value / max) * 100) + '%"></div></div>' +
-                '<span class="lcoe-bar-num">' + fmtLcoe(r.value) + '</span>';
+                '<span class="lcoe-bar-num">' + fmtLcoe(r.value) + '</span>' +
+                '<p class="lcoe-tip lcoe-tip-full" id="tip-' + r.id + '" hidden>' + r.tip + '</p>';
             host.appendChild(row);
         });
     }
 
     function renderStats(m) {
         var stats = [
-            { label: "Net electric power", value: m.netPositive ? (m.Pe / 1e6).toFixed(1) + " MWe" : "≤ 0 MWe" },
-            { label: "Thermal power", value: (m.Pth / 1e6).toFixed(0) + " MWth" },
-            { label: "Recirculating power", value: (m.Prc / 1e6).toFixed(1) + " MWe" },
-            { label: "Shots / year", value: Math.round(m.Ny).toLocaleString() },
-            { label: "Driver lifetime", value: m.Ld.toFixed(1) + " yr" },
-            { label: "Overnight capital cost", value: "$" + (m.capexTotal / 1e6).toFixed(0) + "M" }
+            { id: "stat-pe", label: "Net electric power", value: m.netPositive ? (m.Pe / 1e6).toFixed(1) + " MWe" : "≤ 0 MWe",
+              tip: "Electricity actually sent to the grid, after subtracting the power drawn back to fire the next shot. This is what decides whether it's a power plant at all — negative means the plant consumes more than it makes." },
+            { id: "stat-pth", label: "Thermal power", value: (m.Pth / 1e6).toFixed(0) + " MWth",
+              tip: "Total heat released by the fusion reactions, boosted by the blanket's energy multiplier, before any of it is converted into electricity." },
+            { id: "stat-prc", label: "Recirculating power", value: (m.Prc / 1e6).toFixed(1) + " MWe",
+              tip: "Power diverted straight back into charging the laser for the next shot, before any electricity reaches the grid." },
+            { id: "stat-ny", label: "Shots / year", value: Math.round(m.Ny).toLocaleString(),
+              tip: "How many times the laser fires per year at this repetition rate and availability — what the target factory has to manufacture and supply at, every single year." },
+            { id: "stat-ld", label: "Driver lifetime", value: m.Ld.toFixed(1) + " yr",
+              tip: "How many years the laser can run before it needs an expensive rebuild, given how hard it's firing. Fire faster and this number drops fast." },
+            { id: "stat-capex", label: "Overnight capital cost", value: "$" + (m.capexTotal / 1e6).toFixed(0) + "M",
+              tip: "Total construction cost of the plant if it could be built instantly for cash — the base figure the annual capital charge (and financing assumptions) get applied to." }
         ];
         var host = document.getElementById("lcoe-stats");
         host.innerHTML = "";
         stats.forEach(function (s) {
             var el = document.createElement("div");
             el.className = "lcoe-stat";
-            el.innerHTML = '<span class="lcoe-stat-num">' + s.value + '</span><span class="lcoe-stat-label">' + s.label + '</span>';
+            el.innerHTML =
+                '<span class="lcoe-stat-num">' + s.value + '</span>' +
+                '<span class="lcoe-stat-label">' + s.label + infoBtnHtml(s.id) + '</span>' +
+                '<p class="lcoe-tip lcoe-tip-full" id="tip-' + s.id + '" hidden>' + s.tip + '</p>';
             host.appendChild(el);
         });
     }
@@ -351,6 +365,17 @@
             setActivePreset(name);
             render();
         });
+    });
+
+    root.addEventListener("click", function (e) {
+        var btn = e.target.closest(".lcoe-info-btn");
+        if (!btn || !btn.dataset.tipId) return;
+        var tip = document.getElementById("tip-" + btn.dataset.tipId);
+        if (!tip) return;
+        var open = tip.hidden;
+        tip.hidden = !open;
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        btn.classList.toggle("is-active", open);
     });
 
     buildSliders();

@@ -447,6 +447,7 @@ figure.headshot img {
     display: grid;
     grid-template-columns: 100px 1fr 52px;
     align-items: center;
+    row-gap: 4px;
     gap: 8px;
     font-size: 11.5px;
     color: var(--secondary);
@@ -477,6 +478,16 @@ figure.headshot img {
 .lcoe-bar-num {
     text-align: right;
     white-space: nowrap;
+}
+
+.lcoe-bar-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lcoe-tip-full {
+    grid-column: 1 / -1;
 }
 
 .lcoe-warning {
@@ -522,8 +533,15 @@ figure.headshot img {
 }
 
 .lcoe-stat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-size: 11px;
     color: var(--secondary);
+}
+
+.lcoe-stat .lcoe-tip {
+    margin-top: 4px;
 }
 
 .lcoe-body {
