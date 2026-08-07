@@ -58,6 +58,15 @@ figure.headshot img {
     line-height: 1.7;
 }
 
+/* --- home intro: center the title and opening line --- */
+.home-info .entry-header {
+    text-align: center;
+}
+
+.home-info .entry-content > p:first-of-type {
+    text-align: center;
+}
+
 /* --- "Now" block inside the home intro (centered) --- */
 .home-info .entry-content h4 {
     margin: 18px 0 8px;
