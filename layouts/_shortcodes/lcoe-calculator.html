@@ -253,11 +253,11 @@
         var refs = [
             { id: "bar-hawker", label: "Hawker optimistic", value: 25, tip: "The $25/MWh floor from Hawker's own published best-case scenario, matching the “Hawker's optimistic case” preset above: high gain, low rep rate, cheap financing." },
             { id: "bar-wind", label: "Onshore wind", value: 62, tip: "Midpoint of Lazard's June 2025 unsubsidized cost range for newly built onshore wind farms in the US ($37-86/MWh) — today's cheap, real, buildable baseline." },
-            { id: "bar-life", label: "LLNL LIFE estimate", value: 91, tip: "LLNL's own reported cost projection (9.1 cents/kWh) for the laser fusion plant design this calculator's default preset is built on — see “Where the numbers come from” below." },
+            { id: "bar-life", label: "LLNL LIFE estimate", value: 91, tip: "A fixed reference point: LLNL's own reported cost projection (9.1 cents/kWh) for the laser fusion plant design the “LLNL LIFE design” preset is built on. It's independent of whatever the sliders are set to right now — compare it against “This design” below as a sanity check, not an exact match." },
             { id: "bar-nuclear", label: "New nuclear", value: 181, tip: "Midpoint of Lazard's June 2025 unsubsidized cost range for a newly built nuclear plant ($141-220/MWh) — the standard baseload comparison, and fusion's most common point of comparison." }
         ];
         if (lcoe !== null) {
-            refs.push({ id: "bar-current", label: "This design", value: lcoe, highlight: true, tip: "Whatever the sliders below are currently set to. This bar moves live as you drag them." });
+            refs.push({ id: "bar-current", label: "This design", value: lcoe, highlight: true, tip: "The model's live output for whatever the sliders below are currently set to — it moves as you drag them. On the “LLNL LIFE design” preset this lands close to the fixed “LLNL LIFE estimate” bar, which is the point: two independently-sourced numbers landing near each other. They aren't computed the same way, so don't expect them to match exactly." });
         }
         refs.sort(function (a, b) { return a.value - b.value; });
         var max = Math.max.apply(null, refs.map(function (r) { return r.value; })) * 1.15;

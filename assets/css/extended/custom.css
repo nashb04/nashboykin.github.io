@@ -445,7 +445,7 @@ figure.headshot img {
 
 .lcoe-bar-row {
     display: grid;
-    grid-template-columns: 100px 1fr 52px;
+    grid-template-columns: auto 1fr 40px;
     align-items: center;
     row-gap: 4px;
     gap: 8px;
@@ -484,6 +484,7 @@ figure.headshot img {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
 }
 
 .lcoe-tip-full {
@@ -513,7 +514,8 @@ figure.headshot img {
         grid-template-columns: repeat(2, 1fr);
     }
     .lcoe-bar-row {
-        grid-template-columns: 78px 1fr 46px;
+        grid-template-columns: auto 1fr 36px;
+        font-size: 10.5px;
     }
 }
 
