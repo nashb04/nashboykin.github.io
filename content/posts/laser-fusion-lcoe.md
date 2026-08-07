@@ -4,8 +4,8 @@ date: 2026-08-07T12:00:00-04:00
 draft: false
 tags: ["analysis", "fusion", "lcoe", "laser-fusion"]
 cover:
-  image: "images/supply-chain-icon.png"
-  alt: "Broken supply chain icon"
+  image: "images/lcoe-icon.png"
+  alt: "Price tag with lightning bolt icon"
 ---
 
 Everyone who covers fusion eventually gets asked the same question: what would the electricity actually cost? Almost nobody answers it, because almost nobody can. There's no operating laser fusion power plant, so there's no bill to point to. What exists instead is a handful of assumptions about lasers, targets, and plants that don't exist yet, wired together into a spreadsheet.
