@@ -19,6 +19,27 @@
     color: #374151;
 }
 
+/* PREVIEW ONLY: dark mode header matches post-card grey, white text */
+[data-theme="dark"] .header {
+    background: var(--entry);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .header .logo a,
+[data-theme="dark"] .header #menu a,
+[data-theme="dark"] .header .logo-switches button {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .header .logo a:hover,
+[data-theme="dark"] .header #menu a:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="dark"] .header #menu .active a {
+    color: #ffffff;
+}
+
 /* --- images: center figures, soften corners --- */
 .post-content figure {
     text-align: center;
