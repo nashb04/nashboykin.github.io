@@ -1,6 +1,6 @@
 ---
 title: "Pricing Laser Fusion: A Live LCOE Calculator"
-date: 2026-08-07T12:00:00-04:00
+date: 2026-07-31T12:00:00-04:00
 draft: false
 tags: ["analysis", "fusion", "lcoe", "laser-fusion"]
 cover:
