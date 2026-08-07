@@ -46,20 +46,34 @@
     var PLANT_LIFE = 30;
 
     var params = [
-        { id: "G", group: "physics", label: "Target gain", unit: "×", min: 10, max: 1000, step: 1, scale: "lin", format: fmt0, cheapDir: 1 },
-        { id: "Ed", group: "physics", label: "Driver bank energy", unit: "MJ", min: 0.5, max: 50, step: 0.5, scale: "lin", format: fmt1, cheapDir: -1 },
-        { id: "mud", group: "physics", label: "Driver efficiency", unit: "%", min: 5, max: 30, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
-        { id: "f", group: "physics", label: "Repetition rate", unit: "Hz", min: 0.01, max: 10, step: null, scale: "log", format: fmt3, cheapDir: -1 },
-        { id: "Eb", group: "physics", label: "Blanket energy multiple", unit: "×", min: 0.6, max: 1.4, step: 0.01, scale: "lin", format: fmt2, cheapDir: 1 },
-        { id: "muth", group: "physics", label: "Thermal efficiency", unit: "%", min: 30, max: 60, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
-        { id: "alpha", group: "economics", label: "Plant cost", unit: "$/kWe", min: 1000, max: 6000, step: 50, scale: "lin", format: fmt0, cheapDir: -1 },
-        { id: "gamma", group: "economics", label: "Driver cost", unit: "$/J", min: 2, max: 10, step: 0.1, scale: "lin", format: fmt1, cheapDir: -1 },
-        { id: "beta", group: "economics", label: "Target-factory cost", unit: "$/GJ yield", min: 500000, max: 50000000, step: null, scale: "log", format: fmtMoney, cheapDir: -1 },
-        { id: "delta", group: "economics", label: "Target cost", unit: "$/target", min: 0.1, max: 1000, step: null, scale: "log", format: fmtTarget, cheapDir: -1 },
-        { id: "eps", group: "economics", label: "O&M", unit: "$/kWe-yr", min: 10, max: 100, step: 1, scale: "lin", format: fmt0, cheapDir: -1 },
-        { id: "Nd", group: "economics", label: "Driver lifetime", unit: "shots", min: 1000000, max: 1000000000, step: null, scale: "log", format: fmtMoney, cheapDir: 1 },
-        { id: "mua", group: "economics", label: "Availability", unit: "%", min: 50, max: 100, step: 1, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
-        { id: "d", group: "economics", label: "Discount rate", unit: "%", min: 2, max: 12, step: 0.25, scale: "lin", pct: true, format: fmt2, cheapDir: -1 }
+        { id: "G", group: "physics", label: "Target gain", unit: "×", min: 10, max: 1000, step: 1, scale: "lin", format: fmt0, cheapDir: 1,
+          tip: "How many times more energy the fusion reaction releases than the laser light that hit the target. Gain 60 means the target gives back 60x the energy it was struck with. This is the number that gets headlines (“ignition”), but on its own it says nothing about grid electricity — see driver efficiency." },
+        { id: "Ed", group: "physics", label: "Driver bank energy", unit: "MJ", min: 0.5, max: 50, step: 0.5, scale: "lin", format: fmt1, cheapDir: -1,
+          tip: "How much energy the laser system stores and fires in a single shot. Bigger shots can unlock higher fusion yield, but the laser (and its price tag) scales up with it too." },
+        { id: "mud", group: "physics", label: "Driver efficiency", unit: "%", min: 5, max: 30, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1,
+          tip: "The fraction of electricity drawn from the wall that actually leaves the laser as light on the target. Today's experimental lasers (like NIF) run near 1%; this model assumes a future laser reaching 5–30%, which is the single biggest unsolved engineering problem in laser fusion." },
+        { id: "f", group: "physics", label: "Repetition rate", unit: "Hz", min: 0.01, max: 10, step: null, scale: "log", format: fmt3, cheapDir: -1,
+          tip: "Shots per second. A real plant needs to fire many times a second to produce steady power — today's experiments fire once every few minutes at best. Firing faster makes more electricity from the same machine, but burns through the laser's lifetime and the target supply faster too." },
+        { id: "Eb", group: "physics", label: "Blanket energy multiple", unit: "×", min: 0.6, max: 1.4, step: 0.01, scale: "lin", format: fmt2, cheapDir: 1,
+          tip: "Fusion neutrons slam into a surrounding “blanket” that both breeds tritium fuel and releases extra heat. This is how much bonus thermal energy the blanket adds on top of the raw fusion output — a value above 1 means it's a net energy amplifier, not just a fuel factory." },
+        { id: "muth", group: "physics", label: "Thermal efficiency", unit: "%", min: 30, max: 60, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1,
+          tip: "What fraction of the plant's heat becomes electricity — the same steam-turbine conversion step every coal, gas, or nuclear plant uses. Ordinary thermodynamics caps this around 45–50%, so it's not a lever fusion gets to move much." },
+        { id: "alpha", group: "economics", label: "Plant cost", unit: "$/kWe", min: 1000, max: 6000, step: 50, scale: "lin", format: fmt0, cheapDir: -1,
+          tip: "The construction cost of everything that isn't the laser or the targets: turbines, buildings, cooling systems, the ordinary power-plant majority of the plant. In most designs this is the single largest cost, bigger than the exotic fusion parts." },
+        { id: "gamma", group: "economics", label: "Driver cost", unit: "$/J", min: 2, max: 10, step: 0.1, scale: "lin", format: fmt1, cheapDir: -1,
+          tip: "How expensive the laser system is per joule of energy it can store and fire, driven mostly by the cost of laser diodes and optics at scale." },
+        { id: "beta", group: "economics", label: "Target-factory cost", unit: "$/GJ yield", min: 500000, max: 50000000, step: null, scale: "log", format: fmtMoney, cheapDir: -1,
+          tip: "The capital cost of the factory infrastructure that has to handle the fusion yield each shot produces — the containment and handling systems scale with how energetic each shot is, not just how many targets get made." },
+        { id: "delta", group: "economics", label: "Target cost", unit: "$/target", min: 0.1, max: 1000, step: null, scale: "log", format: fmtTarget, cheapDir: -1,
+          tip: "The manufacturing cost of one single-use fuel pellet. At a few shots per second, a plant burns through millions of these a year — LLNL's own real-world goal is 25 cents each, down from thousands of dollars today, which is why this one small number matters so much." },
+        { id: "eps", group: "economics", label: "O&M", unit: "$/kWe-yr", min: 10, max: 100, step: 1, scale: "lin", format: fmt0, cheapDir: -1,
+          tip: "Ongoing operations and maintenance — staff, spare parts, routine upkeep — billed every year per kilowatt of the plant's capacity." },
+        { id: "Nd", group: "economics", label: "Driver lifetime", unit: "shots", min: 1000000, max: 1000000000, step: null, scale: "log", format: fmtMoney, cheapDir: 1,
+          tip: "How many shots the laser can fire before it needs a costly rebuild. Firing faster (higher repetition rate) burns through this lifetime sooner, so a high-rep-rate plant needs a driver engineered to survive far more shots than a slow one." },
+        { id: "mua", group: "economics", label: "Availability", unit: "%", min: 50, max: 100, step: 1, scale: "lin", pct: true, format: fmt1, cheapDir: 1,
+          tip: "The fraction of the year the plant is actually running and selling electricity, rather than down for maintenance. Today's nuclear fleet runs around 90–93%; fusion's first plants will likely run lower until the technology matures." },
+        { id: "d", group: "economics", label: "Discount rate", unit: "%", min: 2, max: 12, step: 0.25, scale: "lin", pct: true, format: fmt2, cheapDir: -1,
+          tip: "The interest rate used to convert a huge upfront construction bill into an equivalent yearly cost — essentially, how expensive it is to borrow the money to build the plant. Nothing to do with physics, and yet it can swing the final price more than almost any slider above." }
     ];
 
     // Data provenance, per preset:
@@ -182,10 +196,14 @@
                 row.className = "lcoe-slider-row";
                 row.innerHTML =
                     '<div class="lcoe-slider-head">' +
-                        '<label for="lcoe-in-' + p.id + '">' + p.label + '</label>' +
+                        '<span class="lcoe-slider-label">' +
+                            '<label for="lcoe-in-' + p.id + '">' + p.label + '</label>' +
+                            '<button class="lcoe-info-btn" type="button" aria-expanded="false" aria-label="What is ' + p.label + '?">?</button>' +
+                        '</span>' +
                         '<span class="lcoe-slider-val" id="lcoe-val-' + p.id + '"></span>' +
                     '</div>' +
-                    '<input type="range" id="lcoe-in-' + p.id + '" min="0" max="1000" step="1">';
+                    '<input type="range" id="lcoe-in-' + p.id + '" min="0" max="1000" step="1">' +
+                    '<p class="lcoe-tip" hidden>' + p.tip + '</p>';
                 wrap.appendChild(row);
                 var input = row.querySelector("input");
                 input.value = sliderPos(p, state[p.id]);
@@ -193,6 +211,14 @@
                     state[p.id] = sliderVal(p, Number(input.value));
                     setActivePreset(null);
                     render();
+                });
+                var infoBtn = row.querySelector(".lcoe-info-btn");
+                var tip = row.querySelector(".lcoe-tip");
+                infoBtn.addEventListener("click", function () {
+                    var open = tip.hidden;
+                    tip.hidden = !open;
+                    infoBtn.setAttribute("aria-expanded", open ? "true" : "false");
+                    infoBtn.classList.toggle("is-active", open);
                 });
             });
         });
