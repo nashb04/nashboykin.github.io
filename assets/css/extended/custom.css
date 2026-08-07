@@ -311,6 +311,342 @@ figure.headshot img {
     color: var(--secondary);
 }
 
+/* --- laser fusion LCOE calculator --- */
+.lcoe {
+    margin: 28px 0;
+    padding: 20px 22px 8px;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.lcoe-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.lcoe-preset {
+    padding: 7px 13px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--secondary);
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.lcoe-preset:hover {
+    border-color: var(--secondary);
+    color: var(--content);
+}
+
+.lcoe-preset.is-active {
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+.lcoe-headline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.lcoe-headline-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lcoe-headline-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+}
+
+.lcoe-headline-value {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--content);
+}
+
+.lcoe-headline-bars {
+    flex: 1 1 260px;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.lcoe-bar-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 52px;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    color: var(--secondary);
+}
+
+.lcoe-bar-row.is-current {
+    color: var(--content);
+    font-weight: 600;
+}
+
+.lcoe-bar-track {
+    height: 7px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.lcoe-bar-fill {
+    height: 100%;
+    background: var(--secondary);
+    border-radius: 4px;
+}
+
+.lcoe-bar-row.is-current .lcoe-bar-fill {
+    background: var(--primary);
+}
+
+.lcoe-bar-num {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.lcoe-warning {
+    margin-top: 14px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--content);
+    background: rgba(217, 119, 6, 0.12);
+    border: 1px solid rgba(217, 119, 6, 0.35);
+    border-radius: 8px;
+}
+
+.lcoe-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+}
+
+@media (max-width: 640px) {
+    .lcoe-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .lcoe-bar-row {
+        grid-template-columns: 78px 1fr 46px;
+    }
+}
+
+.lcoe-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    background: var(--code-bg);
+    border-radius: 8px;
+}
+
+.lcoe-stat-num {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--content);
+}
+
+.lcoe-stat-label {
+    font-size: 11px;
+    color: var(--secondary);
+}
+
+.lcoe-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+    .lcoe-body {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+}
+
+.lcoe-group h5 {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+}
+
+.lcoe-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lcoe-slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lcoe-slider-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.lcoe-slider-head label {
+    color: var(--content);
+}
+
+.lcoe-slider-val {
+    font-variant-numeric: tabular-nums;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.lcoe-slider-row input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    outline: none;
+    margin: 4px 0;
+}
+
+.lcoe-slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid var(--entry);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.lcoe-slider-row input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid var(--entry);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.lcoe-sensitivity {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.lcoe-sensitivity h5 {
+    margin: 0 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--content);
+}
+
+.lcoe-sensitivity-note {
+    margin: 0 0 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--secondary);
+}
+
+.lcoe-sens-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.lcoe-sens-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 46px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+}
+
+@media (max-width: 640px) {
+    .lcoe-sens-row {
+        grid-template-columns: 96px 1fr 42px;
+        font-size: 11.5px;
+    }
+}
+
+.lcoe-sens-label {
+    color: var(--content);
+}
+
+.lcoe-sens-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.lcoe-sens-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.lcoe-sens-fill.is-up {
+    background: #d97706;
+}
+
+.lcoe-sens-fill.is-down {
+    background: #16a34a;
+}
+
+.lcoe-sens-num {
+    text-align: right;
+    color: var(--secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.lcoe-sens-empty {
+    font-size: 13px;
+    color: var(--secondary);
+}
+
+.lcoe-caption {
+    margin: 18px 0 4px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--secondary);
+}
+
+.lcoe-caption a {
+    color: var(--secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 /* --- post cards: subtle lift on hover --- */
 .post-entry {
     transition: transform 0.15s ease, box-shadow 0.15s ease;

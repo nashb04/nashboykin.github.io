@@ -1,0 +1,327 @@
+<div class="lcoe" id="lcoe">
+
+    <div class="lcoe-presets">
+        <button class="lcoe-preset" data-preset="today" type="button">Today's laser (NIF-scale)</button>
+        <button class="lcoe-preset is-active" data-preset="life" type="button">LLNL LIFE design</button>
+        <button class="lcoe-preset" data-preset="optimistic" type="button">Hawker's optimistic case</button>
+    </div>
+
+    <div class="lcoe-headline">
+        <div class="lcoe-headline-main">
+            <span class="lcoe-headline-label">Levelized cost of electricity</span>
+            <span class="lcoe-headline-value" id="lcoe-value">—</span>
+        </div>
+        <div class="lcoe-headline-bars" id="lcoe-bars"></div>
+    </div>
+
+    <div class="lcoe-warning" id="lcoe-warning" hidden>
+        This configuration draws more power to run the driver than the plant generates. It isn't net electric, let alone competitive. That's roughly where NIF sits today: real fusion gain, no plant.
+    </div>
+
+    <div class="lcoe-stats" id="lcoe-stats"></div>
+
+    <div class="lcoe-body">
+        <div class="lcoe-group">
+            <h5>Target &amp; driver physics</h5>
+            <div class="lcoe-sliders" id="lcoe-physics"></div>
+        </div>
+        <div class="lcoe-group">
+            <h5>Plant economics</h5>
+            <div class="lcoe-sliders" id="lcoe-economics"></div>
+        </div>
+    </div>
+
+    <div class="lcoe-sensitivity">
+        <h5>What's driving the price, right now</h5>
+        <p class="lcoe-sensitivity-note">For your current settings: each parameter nudged 10% toward its cost-friendly direction, one at a time. Longer bar = more leverage over LCOE from here.</p>
+        <div class="lcoe-sens-bars" id="lcoe-sens"></div>
+    </div>
+
+    <p class="lcoe-caption">Assumes a 30-year plant economic life and a 6-year construction period amortized into overnight capital cost. Model: <a href="https://royalsocietypublishing.org/doi/10.1098/rsta.2020.0053" target="_blank" rel="noopener">Hawker (2021)</a>, cross-checked against <a href="https://www.osti.gov/servlets/purl/964088" target="_blank" rel="noopener">LLNL's LIFE systems study</a>.</p>
+</div>
+
+<script>
+(function () {
+    var SEC_YR = 365 * 24 * 3600;
+    var PLANT_LIFE = 30;
+
+    var params = [
+        { id: "G", group: "physics", label: "Target gain", unit: "×", min: 10, max: 1000, step: 1, scale: "lin", format: fmt0, cheapDir: 1 },
+        { id: "Ed", group: "physics", label: "Driver bank energy", unit: "MJ", min: 0.5, max: 50, step: 0.5, scale: "lin", format: fmt1, cheapDir: -1 },
+        { id: "mud", group: "physics", label: "Driver efficiency", unit: "%", min: 5, max: 30, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
+        { id: "f", group: "physics", label: "Repetition rate", unit: "Hz", min: 0.01, max: 10, step: null, scale: "log", format: fmt3, cheapDir: -1 },
+        { id: "Eb", group: "physics", label: "Blanket energy multiple", unit: "×", min: 0.6, max: 1.4, step: 0.01, scale: "lin", format: fmt2, cheapDir: 1 },
+        { id: "muth", group: "physics", label: "Thermal efficiency", unit: "%", min: 30, max: 60, step: 0.5, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
+        { id: "alpha", group: "economics", label: "Plant cost", unit: "$/kWe", min: 1000, max: 6000, step: 50, scale: "lin", format: fmt0, cheapDir: -1 },
+        { id: "gamma", group: "economics", label: "Driver cost", unit: "$/J", min: 2, max: 10, step: 0.1, scale: "lin", format: fmt1, cheapDir: -1 },
+        { id: "beta", group: "economics", label: "Target-factory cost", unit: "$/GJ yield", min: 500000, max: 50000000, step: null, scale: "log", format: fmtMoney, cheapDir: -1 },
+        { id: "delta", group: "economics", label: "Target cost", unit: "$/target", min: 0.1, max: 1000, step: null, scale: "log", format: fmtTarget, cheapDir: -1 },
+        { id: "eps", group: "economics", label: "O&M", unit: "$/kWe-yr", min: 10, max: 100, step: 1, scale: "lin", format: fmt0, cheapDir: -1 },
+        { id: "Nd", group: "economics", label: "Driver lifetime", unit: "shots", min: 1000000, max: 1000000000, step: null, scale: "log", format: fmtMoney, cheapDir: 1 },
+        { id: "mua", group: "economics", label: "Availability", unit: "%", min: 50, max: 100, step: 1, scale: "lin", pct: true, format: fmt1, cheapDir: 1 },
+        { id: "d", group: "economics", label: "Discount rate", unit: "%", min: 2, max: 12, step: 0.25, scale: "lin", pct: true, format: fmt2, cheapDir: -1 }
+    ];
+
+    // "life" = LLNL's own Market Entry Plant design point (2.2 MJ on target, gain 60,
+    // 8.3 Hz, 45% thermal efficiency, 18% driver efficiency) reproduces their published
+    // ~1100 MW fusion / ~1320 MWth / ~390 MWe within ~10%. delta is LLNL's own stated
+    // target-cost goal ($0.25/target); Nd is pushed to the top of its range since a
+    // multi-Hz diode array needs to survive far more shots than a low-rep-rate baseline;
+    // alpha is reverse-derived from LLNL's own $6.4B / 9.1 cents-per-kWh estimate.
+    // Everything else (gamma, beta, eps, mua) is Hawker's generic constant, unverified
+    // against LLNL's own cost breakdown.
+    var presets = {
+        today: { G: 3,   Ed: 2,    mud: 5,  f: 0.01, Eb: 1.0, muth: 35, alpha: 6000, gamma: 10, beta: 50000000, delta: 100,  eps: 100, Nd: 1000000, mua: 50, d: 8 },
+        life:  { G: 60,  Ed: 12.2, mud: 18, f: 8.3,  Eb: 1.2, muth: 45, alpha: 4100, gamma: 5,  beta: 5000000,  delta: 0.25, eps: 30,  Nd: 1000000000, mua: 70, d: 8 },
+        optimistic: { G: 1000, Ed: 25, mud: 20, f: 0.05, Eb: 1.2, muth: 50, alpha: 1500, gamma: 3, beta: 5000000, delta: 2, eps: 20, Nd: 40000000, mua: 80, d: 4 }
+    };
+
+    var state = {};
+    Object.keys(presets.life).forEach(function (k) { state[k] = presets.life[k]; });
+
+    function fmt0(v) { return Math.round(v).toLocaleString(); }
+    function fmt1(v) { return v.toFixed(1); }
+    function fmt2(v) { return v.toFixed(2); }
+    function fmt3(v) { return v < 0.1 ? v.toFixed(3) : v.toFixed(2); }
+    function fmtTarget(v) { return v < 10 ? v.toFixed(2) : Math.round(v).toLocaleString(); }
+    function fmtMoney(v) {
+        if (v >= 1e9) return (v / 1e9).toFixed(2) + "B";
+        if (v >= 1e6) return (v / 1e6).toFixed(1) + "M";
+        if (v >= 1e3) return (v / 1e3).toFixed(0) + "k";
+        return Math.round(v).toString();
+    }
+
+    function paramById(id) {
+        for (var i = 0; i < params.length; i++) if (params[i].id === id) return params[i];
+        return null;
+    }
+
+    // --- physics + cost model, mirrors Hawker (2021) sections 2a-2c ---
+    function compute(s) {
+        var Ed = s.Ed * 1e6;                       // J
+        var mud = s.mud / 100;
+        var muth = s.muth / 100;
+        var mua = s.mua / 100;
+        var d = s.d / 100;
+
+        var Et = mud * Ed;                          // J on target
+        var Ef = s.G * Et;                           // J fusion yield / shot
+        var Pfus = Ef * s.f;                          // W
+        var Pth = s.Eb * Pfus;                        // W
+        var Prc = 2 * Ed * s.f;                       // W recirculating
+        var Pe = muth * Pth - Prc;                    // W net electric
+
+        var Ny = SEC_YR * s.f * mua;                  // shots / yr
+        var Ld = s.Nd / Ny;                           // yr
+
+        var netPositive = Pe > 0;
+        var PeSafe = netPositive ? Pe : 0;
+
+        var PeKw = PeSafe / 1000;
+        var EfGJ = Ef / 1e9;
+
+        var capexPlant = s.alpha * PeKw;
+        var capexYield = s.beta * EfGJ;
+        var capexDriver = s.gamma * Ed;
+        var capexTotal = capexPlant + capexYield + capexDriver;
+
+        var driverAnnual = Ld > 0 ? capexDriver / Ld : capexDriver;
+        var targetAnnual = s.delta * Ny;
+        var omAnnual = s.eps * PeKw;
+        var opexAnnual = driverAnnual + targetAnnual + omAnnual;
+
+        var crf = d / (1 - Math.pow(1 + d, -PLANT_LIFE));
+        var capChargeAnnual = crf * capexTotal;
+
+        var totalAnnualCost = capChargeAnnual + opexAnnual;
+        var annualMWh = (PeSafe / 1e6) * 8760 * mua;
+
+        var lcoe = netPositive && annualMWh > 0 ? totalAnnualCost / annualMWh : null;
+
+        return {
+            netPositive: netPositive,
+            Pe: Pe, Pth: Pth, Pfus: Pfus, Prc: Prc,
+            Ny: Ny, Ld: Ld,
+            capexTotal: capexTotal,
+            annualMWh: annualMWh,
+            lcoe: lcoe
+        };
+    }
+
+    // --- UI scaffolding ---
+    var root = document.getElementById("lcoe");
+    if (!root) return;
+
+    function sliderPos(p, v) {
+        if (p.scale === "log") {
+            return (Math.log(v / p.min) / Math.log(p.max / p.min)) * 1000;
+        }
+        return ((v - p.min) / (p.max - p.min)) * 1000;
+    }
+    function sliderVal(p, pos) {
+        if (p.scale === "log") {
+            return p.min * Math.pow(p.max / p.min, pos / 1000);
+        }
+        var raw = p.min + (pos / 1000) * (p.max - p.min);
+        if (p.step) raw = Math.round(raw / p.step) * p.step;
+        return raw;
+    }
+
+    function buildSliders() {
+        ["physics", "economics"].forEach(function (group) {
+            var wrap = document.getElementById(group === "physics" ? "lcoe-physics" : "lcoe-economics");
+            wrap.innerHTML = "";
+            params.filter(function (p) { return p.group === group; }).forEach(function (p) {
+                var row = document.createElement("div");
+                row.className = "lcoe-slider-row";
+                row.innerHTML =
+                    '<div class="lcoe-slider-head">' +
+                        '<label for="lcoe-in-' + p.id + '">' + p.label + '</label>' +
+                        '<span class="lcoe-slider-val" id="lcoe-val-' + p.id + '"></span>' +
+                    '</div>' +
+                    '<input type="range" id="lcoe-in-' + p.id + '" min="0" max="1000" step="1">';
+                wrap.appendChild(row);
+                var input = row.querySelector("input");
+                input.value = sliderPos(p, state[p.id]);
+                input.addEventListener("input", function () {
+                    state[p.id] = sliderVal(p, Number(input.value));
+                    setActivePreset(null);
+                    render();
+                });
+            });
+        });
+    }
+
+    function updateSliderDisplays() {
+        params.forEach(function (p) {
+            var el = document.getElementById("lcoe-val-" + p.id);
+            var input = document.getElementById("lcoe-in-" + p.id);
+            var v = state[p.id];
+            el.textContent = p.format(v) + (p.unit ? " " + p.unit : "");
+            input.value = sliderPos(p, v);
+        });
+    }
+
+    function setActivePreset(name) {
+        var buttons = root.querySelectorAll(".lcoe-preset");
+        buttons.forEach(function (b) {
+            b.classList.toggle("is-active", b.dataset.preset === name);
+        });
+    }
+
+    function fmtLcoe(v) {
+        return "$" + v.toFixed(v < 100 ? 1 : 0);
+    }
+
+    function renderBars(lcoe) {
+        var refs = [
+            { label: "Hawker optimistic", value: 25 },
+            { label: "Onshore wind", value: 50 },
+            { label: "LLNL LIFE estimate", value: 91 },
+            { label: "Nuclear (fission)", value: 100 }
+        ];
+        if (lcoe !== null) {
+            refs.push({ label: "This design", value: lcoe, highlight: true });
+        }
+        refs.sort(function (a, b) { return a.value - b.value; });
+        var max = Math.max.apply(null, refs.map(function (r) { return r.value; })) * 1.15;
+        var host = document.getElementById("lcoe-bars");
+        host.innerHTML = "";
+        refs.forEach(function (r) {
+            var row = document.createElement("div");
+            row.className = "lcoe-bar-row" + (r.highlight ? " is-current" : "");
+            row.innerHTML =
+                '<span class="lcoe-bar-label">' + r.label + '</span>' +
+                '<div class="lcoe-bar-track"><div class="lcoe-bar-fill" style="width:' + Math.min(100, (r.value / max) * 100) + '%"></div></div>' +
+                '<span class="lcoe-bar-num">' + fmtLcoe(r.value) + '</span>';
+            host.appendChild(row);
+        });
+    }
+
+    function renderStats(m) {
+        var stats = [
+            { label: "Net electric power", value: m.netPositive ? (m.Pe / 1e6).toFixed(1) + " MWe" : "≤ 0 MWe" },
+            { label: "Thermal power", value: (m.Pth / 1e6).toFixed(0) + " MWth" },
+            { label: "Recirculating power", value: (m.Prc / 1e6).toFixed(1) + " MWe" },
+            { label: "Shots / year", value: Math.round(m.Ny).toLocaleString() },
+            { label: "Driver lifetime", value: m.Ld.toFixed(1) + " yr" },
+            { label: "Overnight capital cost", value: "$" + (m.capexTotal / 1e6).toFixed(0) + "M" }
+        ];
+        var host = document.getElementById("lcoe-stats");
+        host.innerHTML = "";
+        stats.forEach(function (s) {
+            var el = document.createElement("div");
+            el.className = "lcoe-stat";
+            el.innerHTML = '<span class="lcoe-stat-num">' + s.value + '</span><span class="lcoe-stat-label">' + s.label + '</span>';
+            host.appendChild(el);
+        });
+    }
+
+    function renderSensitivity(baseLcoe) {
+        var host = document.getElementById("lcoe-sens");
+        host.innerHTML = "";
+        if (baseLcoe === null) {
+            host.innerHTML = '<p class="lcoe-sens-empty">Get this design net electric first to see what moves its price.</p>';
+            return;
+        }
+        var deltas = params.map(function (p) {
+            var trial = {};
+            Object.keys(state).forEach(function (k) { trial[k] = state[k]; });
+            var step = (p.max - p.min) * 0.1 * (p.scale === "log" ? 1 : 1);
+            var nv;
+            if (p.scale === "log") {
+                nv = state[p.id] * Math.pow(p.max / p.min, 0.1 * p.cheapDir);
+            } else {
+                nv = state[p.id] + (p.max - p.min) * 0.1 * p.cheapDir;
+            }
+            nv = Math.max(p.min, Math.min(p.max, nv));
+            trial[p.id] = nv;
+            var r = compute(trial);
+            var pct = r.lcoe !== null ? ((r.lcoe - baseLcoe) / baseLcoe) * 100 : 0;
+            return { label: p.label, pct: pct };
+        });
+        deltas.sort(function (a, b) { return Math.abs(b.pct) - Math.abs(a.pct); });
+        var maxAbs = Math.max.apply(null, deltas.map(function (d) { return Math.abs(d.pct); })) || 1;
+        deltas.slice(0, 6).forEach(function (d) {
+            var row = document.createElement("div");
+            row.className = "lcoe-sens-row";
+            var pct = Math.min(100, (Math.abs(d.pct) / maxAbs) * 100);
+            row.innerHTML =
+                '<span class="lcoe-sens-label">' + d.label + '</span>' +
+                '<div class="lcoe-sens-track"><div class="lcoe-sens-fill ' + (d.pct < 0 ? "is-down" : "is-up") + '" style="width:' + pct + '%"></div></div>' +
+                '<span class="lcoe-sens-num">' + (d.pct <= 0 ? "−" : "+") + Math.abs(d.pct).toFixed(0) + '%</span>';
+            host.appendChild(row);
+        });
+    }
+
+    function render() {
+        updateSliderDisplays();
+        var m = compute(state);
+        var valueEl = document.getElementById("lcoe-value");
+        var warnEl = document.getElementById("lcoe-warning");
+        if (m.netPositive && m.lcoe !== null) {
+            valueEl.textContent = fmtLcoe(m.lcoe) + "/MWh";
+            warnEl.hidden = true;
+        } else {
+            valueEl.textContent = "not net electric";
+            warnEl.hidden = false;
+        }
+        renderBars(m.lcoe);
+        renderStats(m);
+        renderSensitivity(m.lcoe);
+    }
+
+    root.querySelectorAll(".lcoe-preset").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var name = btn.dataset.preset;
+            var p = presets[name];
+            Object.keys(p).forEach(function (k) { state[k] = p[k]; });
+            setActivePreset(name);
+            render();
+        });
+    });
+
+    buildSliders();
+    render();
+})();
+</script>
