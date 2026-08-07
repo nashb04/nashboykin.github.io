@@ -33,7 +33,7 @@
 
     <div class="lcoe-sensitivity">
         <h5>What's driving the price, right now</h5>
-        <p class="lcoe-sensitivity-note">For your current settings: each parameter nudged 10% toward its cost-friendly direction, one at a time. Longer bar = more leverage over LCOE from here.</p>
+        <p class="lcoe-sensitivity-note">For your current slider settings: each of the 14 parameters is tested 10% higher and 10% lower, one at a time, holding everything else fixed. Shown is whichever direction actually lowers the price (&uarr; = raise it, &darr; = lower it) and by how much. Longer bar = more leverage over LCOE from here.</p>
         <div class="lcoe-sens-bars" id="lcoe-sens"></div>
     </div>
 
@@ -310,32 +310,44 @@
             host.innerHTML = '<p class="lcoe-sens-empty">Get this design net electric first to see what moves its price.</p>';
             return;
         }
-        var deltas = params.map(function (p) {
+        function trialPct(p, dir) {
             var trial = {};
             Object.keys(state).forEach(function (k) { trial[k] = state[k]; });
-            var step = (p.max - p.min) * 0.1 * (p.scale === "log" ? 1 : 1);
             var nv;
             if (p.scale === "log") {
-                nv = state[p.id] * Math.pow(p.max / p.min, 0.1 * p.cheapDir);
+                nv = state[p.id] * Math.pow(p.max / p.min, 0.1 * dir);
             } else {
-                nv = state[p.id] + (p.max - p.min) * 0.1 * p.cheapDir;
+                nv = state[p.id] + (p.max - p.min) * 0.1 * dir;
             }
             nv = Math.max(p.min, Math.min(p.max, nv));
             trial[p.id] = nv;
             var r = compute(trial);
-            var pct = r.lcoe !== null ? ((r.lcoe - baseLcoe) / baseLcoe) * 100 : 0;
-            return { label: p.label, pct: pct };
+            return r.lcoe !== null ? ((r.lcoe - baseLcoe) / baseLcoe) * 100 : 0;
+        }
+
+        // Test both directions per parameter and keep whichever actually lowers
+        // LCOE from here — a parameter's "cheap direction" isn't fixed in general,
+        // it depends on the rest of the design (e.g. shrinking driver energy also
+        // shrinks electrical output, which can raise LCOE even as capital cost falls).
+        var deltas = params.map(function (p) {
+            var up = trialPct(p, 1);
+            var down = trialPct(p, -1);
+            var best = up < down ? up : down;
+            var dir = up < down ? "raise" : "lower";
+            if (best >= 0) { return { label: p.label, pct: 0, dir: null }; }
+            return { label: p.label, pct: best, dir: dir };
         });
-        deltas.sort(function (a, b) { return Math.abs(b.pct) - Math.abs(a.pct); });
+        deltas.sort(function (a, b) { return a.pct - b.pct; });
         var maxAbs = Math.max.apply(null, deltas.map(function (d) { return Math.abs(d.pct); })) || 1;
         deltas.slice(0, 6).forEach(function (d) {
             var row = document.createElement("div");
             row.className = "lcoe-sens-row";
             var pct = Math.min(100, (Math.abs(d.pct) / maxAbs) * 100);
+            var arrow = d.dir === "raise" ? "&uarr;" : d.dir === "lower" ? "&darr;" : "";
             row.innerHTML =
-                '<span class="lcoe-sens-label">' + d.label + '</span>' +
-                '<div class="lcoe-sens-track"><div class="lcoe-sens-fill ' + (d.pct < 0 ? "is-down" : "is-up") + '" style="width:' + pct + '%"></div></div>' +
-                '<span class="lcoe-sens-num">' + (d.pct <= 0 ? "−" : "+") + Math.abs(d.pct).toFixed(0) + '%</span>';
+                '<span class="lcoe-sens-label">' + (arrow ? '<span class="lcoe-sens-arrow">' + arrow + '</span> ' : '') + d.label + '</span>' +
+                '<div class="lcoe-sens-track"><div class="lcoe-sens-fill" style="width:' + pct + '%"></div></div>' +
+                '<span class="lcoe-sens-num">' + (d.pct < 0 ? "−" + Math.abs(d.pct).toFixed(0) + "%" : "~0%") + '</span>';
             host.appendChild(row);
         });
     }

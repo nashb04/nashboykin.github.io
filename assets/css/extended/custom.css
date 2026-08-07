@@ -717,6 +717,12 @@ figure.headshot img {
     color: var(--content);
 }
 
+.lcoe-sens-arrow {
+    display: inline-block;
+    color: var(--secondary);
+    font-weight: 700;
+}
+
 .lcoe-sens-track {
     height: 8px;
     background: var(--border);
@@ -727,13 +733,6 @@ figure.headshot img {
 .lcoe-sens-fill {
     height: 100%;
     border-radius: 4px;
-}
-
-.lcoe-sens-fill.is-up {
-    background: #d97706;
-}
-
-.lcoe-sens-fill.is-down {
     background: #16a34a;
 }
 
