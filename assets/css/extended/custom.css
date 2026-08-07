@@ -58,12 +58,8 @@ figure.headshot img {
     line-height: 1.7;
 }
 
-/* --- home intro: center the title and opening line --- */
+/* --- home intro: center the title --- */
 .home-info .entry-header {
-    text-align: center;
-}
-
-.home-info .entry-content > p:first-of-type {
     text-align: center;
 }
 
