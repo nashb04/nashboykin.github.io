@@ -12,6 +12,8 @@ Everyone who covers fusion eventually gets asked the same question: what would t
 
 So I built the spreadsheet. Then I turned it into something you can play with.
 
+Quick orientation before you start dragging sliders: the three buttons at the top aren't three snapshots of the same thing at different points in time. They're three different *kinds* of number. **Today's laser** is what a real facility (NIF) has actually, physically done this week, with hardware that exists — proof the physics works, not a power plant. **LLNL LIFE design** is a real engineering blueprint for a future plant nobody has built yet, published by the same lab that runs NIF. **Hawker's optimistic case** is a theoretical best case from an economics paper, not tied to any specific lab's design at all — just "if every parameter lands near its best plausible value." None of the three generates electricity today. They sit at three different distances from reality: proven physics, an unbuilt blueprint, and an aspirational floor.
+
 {{< lcoe-calculator >}}
 
 ## Where the numbers come from
