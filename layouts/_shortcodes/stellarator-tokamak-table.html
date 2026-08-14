@@ -1,0 +1,94 @@
+<div class="stvt" id="stvt">
+    <div class="stvt-table" id="stvt-table">
+        <div class="stvt-row stvt-header-row">
+            <div class="stvt-corner"></div>
+            <div class="stvt-col-header">
+                <span class="stvt-col-title">Stellarator</span>
+                <span class="stvt-col-sub">Proxima Fusion</span>
+            </div>
+            <div class="stvt-col-header">
+                <span class="stvt-col-title">Tokamak</span>
+                <span class="stvt-col-sub">Commonwealth Fusion Systems</span>
+            </div>
+        </div>
+    </div>
+    <p class="stvt-hint">Tap a row to see why it matters.</p>
+</div>
+
+<script>
+(function () {
+    var rows = [
+        {
+            id: "size",
+            label: "Size",
+            stell: "12.7 m major radius (Stellaris)",
+            tok: "3.3 m major radius (ARC)",
+            detail: "Tokamaks can be dramatically more compact for a given magnetic field, because a tokamak gets a large assist confining the plasma from a current driven straight through it. A stellarator has to do all of that shaping work with external coils alone, which is part of why Stellaris needs roughly 4x the major radius of ARC at a similar field strength. That driven current is also exactly what creates the risk in the Operation row below &mdash; the compactness and the risk come from the same design choice."
+        },
+        {
+            id: "magnets",
+            label: "Magnet shape",
+            stell: "Twisted, non-planar 3D coils &mdash; no two alike",
+            tok: "Simple planar rings, the same basic shape as an MRI magnet",
+            detail: "A tokamak's coils are simple circles, which is a big part of why the technology has a seventy-year head start and a deep manufacturing base to build on. A stellarator's coils are complex, computer-optimized 3D shapes, each one different, each machined and wound individually. That complexity is the price of the steady-state operation below &mdash; it's the central engineering bet of the entire stellarator program."
+        },
+        {
+            id: "operation",
+            label: "Operation",
+            stell: "Continuous by design &mdash; no net plasma current, so nothing to disrupt",
+            tok: "Pulsed &mdash; SPARC's flattop runs 10 seconds, engineered around a 10% disruption probability per pulse",
+            detail: "Tokamak plasmas rely on a driven current, and that current can suddenly collapse in a &ldquo;disruption,&rdquo; dumping megajoules into the machine in milliseconds. It's a real, engineered-around risk, not a hypothetical: SPARC's own physics team designs the machine assuming a 1-in-10 chance of it happening on every full-power pulse. Stellarators sidestep the problem entirely by never needing plasma current in the first place, which is the single cleanest argument in their favor."
+        },
+        {
+            id: "demo",
+            label: "Demo machine",
+            stell: "Alpha &mdash; targeting 2031, first stellarator built to show net energy in continuous operation",
+            tok: "SPARC &mdash; under construction now, targeting fusion gain Q &asymp; 11",
+            detail: "Neither of these machines makes electricity. Both exist to prove their side's central bet: SPARC is proving a compact, high-field tokamak can reach strong energy gain despite the pulsing and disruption risk; Alpha is proving a stellarator can reach net energy without either. Whichever team proves its bet first gets to build the commercial follow-on with a straight face."
+        },
+        {
+            id: "commercial",
+            label: "Commercial concept",
+            stell: "Stellaris &mdash; up to 2.7 GW fusion power, ~3.1 GW thermal (no net electric figure published yet)",
+            tok: "ARC &mdash; 270 MWe net electric, Q &asymp; 13.6",
+            detail: "These aren't quite apples to apples yet, and that gap is itself informative. CFS's team has published a net electric number they're willing to stand behind; Proxima's team has published fusion and thermal power but hasn't (publicly) committed to a net electric figure for Stellaris. That's consistent with CFS being a few years further down the commercialization path &mdash; it shows up in which numbers each team is willing to put a stake in the ground on."
+        }
+    ];
+
+    var host = document.getElementById("stvt-table");
+    if (!host) return;
+
+    rows.forEach(function (r) {
+        var row = document.createElement("div");
+        row.className = "stvt-row stvt-data-row";
+        row.setAttribute("role", "button");
+        row.setAttribute("tabindex", "0");
+        row.setAttribute("aria-expanded", "false");
+        row.innerHTML =
+            '<span class="stvt-label">' + r.label + '</span>' +
+            '<span class="stvt-cell">' + r.stell + '</span>' +
+            '<span class="stvt-cell">' + r.tok + '</span>';
+        host.appendChild(row);
+
+        var detail = document.createElement("p");
+        detail.className = "stvt-detail";
+        detail.hidden = true;
+        detail.innerHTML = r.detail;
+        host.appendChild(detail);
+
+        function toggle() {
+            var open = detail.hidden;
+            detail.hidden = !open;
+            row.setAttribute("aria-expanded", open ? "true" : "false");
+            row.classList.toggle("is-open", open);
+        }
+        row.addEventListener("click", toggle);
+        row.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toggle();
+            }
+        });
+    });
+})();
+</script>
