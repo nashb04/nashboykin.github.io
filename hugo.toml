@@ -18,21 +18,12 @@ pygmentsUseClasses = true
   env = 'production'
   title = 'Stars on Earth'
   images = ['images/og-card.png']
-
-  [params.label]
-    text = 'Nash Boykin | Stars on Earth'
-
-  [params.assets]
-    favicon = 'favicon-32.png'
-    favicon16x16 = 'favicon-16.png'
-    favicon32x32 = 'favicon-32.png'
-    apple_touch_icon = 'apple-touch-icon.png'
   description = 'Stars on Earth — Nash Boykin on remarkable people, good reads, and fusion energy'
   keywords = ['blog', 'stars on earth', 'nash boykin', 'fusion', 'duke', 'fuqua']
   author = 'Nash Boykin'
   DateFormat = 'January 2, 2006'
-  defaultTheme = 'auto'
-  disableThemeToggle = false
+  defaultTheme = 'dark'
+  disableThemeToggle = true
   ShowShareButtons = false
   ShowReadingTime = true
   displayFullLangName = true
@@ -44,6 +35,15 @@ pygmentsUseClasses = true
   TocOpen = false
   comments = false
   hidemeta = false
+
+  [params.label]
+    text = 'Nash Boykin | Stars on Earth'
+
+  [params.assets]
+    favicon = 'favicon-32.png'
+    favicon16x16 = 'favicon-16.png'
+    favicon32x32 = 'favicon-32.png'
+    apple_touch_icon = 'apple-touch-icon.png'
 
   [params.homeInfoParams]
     Title = 'Stars on Earth'
