@@ -1,9 +1,9 @@
 <div class="glp" id="glp">
 
     <div class="glp-presets">
-        <button class="glp-preset" data-price="91" type="button">LLNL realistic ($91/MWh)</button>
-        <button class="glp-preset is-active" data-price="55" type="button">Midpoint ($55/MWh)</button>
         <button class="glp-preset" data-price="25" type="button">Hawker optimistic ($25/MWh)</button>
+        <button class="glp-preset is-active" data-price="91" type="button">LLNL realistic ($91/MWh)</button>
+        <button class="glp-preset" data-price="200" type="button">Pessimistic ($200/MWh)</button>
     </div>
 
     <div class="glp-slider-row">
@@ -11,7 +11,7 @@
             <label for="glp-price">Fusion LCOE</label>
             <span class="glp-slider-val" id="glp-price-val"></span>
         </div>
-        <input type="range" id="glp-price" min="20" max="200" step="1" value="55">
+        <input type="range" id="glp-price" min="20" max="220" step="1" value="91">
     </div>
 
     <div class="glp-result">
