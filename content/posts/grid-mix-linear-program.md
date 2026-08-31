@@ -1,11 +1,11 @@
 ---
-title: "Fusion's Breakeven Price, Solved With a Linear Program"
+title: "Fusion's Breakeven Price: A Linear Program"
 date: 2026-08-31T12:00:00-04:00
 draft: false
 tags: ["analysis", "fusion", "optimization", "lcoe"]
 cover:
-  image: "images/fusion3.png"
-  alt: "Atom icon"
+  image: "images/minimize-icon.png"
+  alt: "Hand-drawn parabola minimization icon"
 ---
 
 I just finished a decision sciences course that spent a good chunk of the semester on linear programming, and I wanted to use it on something real before the material faded. The [laser fusion LCOE calculator](/posts/laser-fusion-lcoe/) already gave me verified $/MWh figures for solar, wind, and nuclear fission. An LP needs exactly that: a cost per unit of something, and constraints on how much of that something you're allowed to build. So: given North Carolina's actual electricity demand, what's the cheapest way to meet it, blending solar, wind, fission, and fusion, and how does the answer change as fusion's price moves?
