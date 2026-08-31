@@ -6,7 +6,8 @@
 
 .header .logo a,
 .header #menu a,
-.header .logo-switches button {
+.header .logo-switches button,
+.header .site-star {
     color: #6b7280;
 }
 
@@ -19,7 +20,11 @@
     color: #374151;
 }
 
-/* PREVIEW ONLY: dark mode header matches post-card grey, white text */
+.site-star {
+    padding: 0 0.4rem;
+}
+
+/* dark mode header matches post-card grey, white text (site is dark-only) */
 [data-theme="dark"] .header {
     background: var(--entry);
     border-bottom: 1px solid rgba(255, 255, 255, 0.35);
@@ -27,7 +32,8 @@
 
 [data-theme="dark"] .header .logo a,
 [data-theme="dark"] .header #menu a,
-[data-theme="dark"] .header .logo-switches button {
+[data-theme="dark"] .header .logo-switches button,
+[data-theme="dark"] .header .site-star {
     color: #ffffff;
 }
 
