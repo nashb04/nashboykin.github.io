@@ -896,6 +896,156 @@ figure.headshot img {
     }
 }
 
+/* --- fusion economic viability map (Qecon) --- */
+.qem {
+    margin: 28px 0;
+    padding: 20px 22px;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.qem-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.qem-slider-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.qem-slider-head label {
+    color: var(--content);
+}
+
+.qem-slider-val {
+    font-variant-numeric: tabular-nums;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.qem-slider-row input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    outline: none;
+}
+
+.qem-slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid var(--entry);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.qem-slider-row input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid var(--entry);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.qem-count {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--content);
+}
+
+.qem-chart-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#qem-svg {
+    width: 100%;
+    height: auto;
+    min-width: 460px;
+    display: block;
+}
+
+.qem-axis-label {
+    font-size: 10px;
+    fill: var(--secondary);
+}
+
+.qem-axis-title {
+    font-size: 11px;
+    fill: var(--secondary);
+}
+
+.qem-threshold-label {
+    font-size: 10px;
+    fill: #d97706;
+}
+
+.qem-tick-label {
+    font-size: 10px;
+    fill: var(--secondary);
+}
+
+.qem-dot-label {
+    font-size: 10px;
+    fill: var(--content);
+}
+
+.qem-dot {
+    cursor: pointer;
+}
+
+.qem-dot circle {
+    stroke: var(--entry);
+    stroke-width: 1.5;
+    transition: r 0.1s ease;
+}
+
+.qem-dot:hover circle,
+.qem-dot:focus circle {
+    r: 10;
+    outline: none;
+}
+
+.qem-dot circle.is-viable {
+    fill: #16a34a;
+}
+
+.qem-dot circle.is-not-viable {
+    fill: #dc2626;
+}
+
+.qem-hint {
+    margin: 10px 0 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--secondary);
+}
+
+.qem-detail {
+    margin-top: 12px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--content);
+    background: var(--code-bg);
+    border-radius: 8px;
+}
+
 /* --- post cards: subtle lift on hover --- */
 .post-entry {
     transition: transform 0.15s ease, box-shadow 0.15s ease;

@@ -1,0 +1,186 @@
+<div class="qem" id="qem">
+
+    <div class="qem-sliders">
+        <div class="qem-slider-row">
+            <div class="qem-slider-head">
+                <label for="qem-i">Cost of capital</label>
+                <span class="qem-slider-val" id="qem-i-val"></span>
+            </div>
+            <input type="range" id="qem-i" min="0" max="20" step="0.25" value="2">
+        </div>
+        <div class="qem-slider-row">
+            <div class="qem-slider-head">
+                <label for="qem-wall">Wall replacement: cheap &amp; fast &harr; resilient &amp; expensive</label>
+                <span class="qem-slider-val" id="qem-wall-val"></span>
+            </div>
+            <input type="range" id="qem-wall" min="20" max="400" step="5" value="100">
+        </div>
+    </div>
+
+    <p class="qem-count" id="qem-count"></p>
+
+    <div class="qem-chart-wrap">
+        <svg id="qem-svg" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <p class="qem-hint">Each dot is a real published fusion power plant design. Green = economically viable (Q<tspan>econ</tspan> &ge; 1) at the sliders' current assumptions, red = not. Tap a dot for details.</p>
+
+    <div class="qem-detail" id="qem-detail" hidden></div>
+</div>
+
+<script>
+(function () {
+    var designs = [
+        { name: "ARIES-RS", type: "Tokamak", pfs: 5.2, cost: 12.0, eta: 0.46 },
+        { name: "ARIES-ST", type: "Spherical tokamak", pfs: 5.1, cost: 9.2, eta: 0.34 },
+        { name: "ARIES-AT", type: "Advanced tokamak", pfs: 3.8, cost: 7.7, eta: 0.58 },
+        { name: "ARIES-CS", type: "Stellarator", pfs: 3.3, cost: 6.0, eta: 0.41 },
+        { name: "HYLIFE-II", type: "Laser (ICF)", pfs: 11.1, cost: 14.7, eta: 0.45 },
+        { name: "LIFE.2", type: "Laser (ICF)", pfs: 5.6, cost: 14.5, eta: 0.45 },
+        { name: "ARC-V2E", type: "Tokamak", pfs: 4.0, cost: 11.9, eta: 0.35 }
+    ];
+    // Devices with a real, reported power density but no published overnight areal
+    // cost, or (for ITER/SPARC) no electric conversion system at all, so Qecon isn't
+    // a meaningful question for them. Shown as ticks on the power-density axis only.
+    var ticks = [
+        { name: "ITER", pfs: 0.7, note: "no electric conversion system" },
+        { name: "SPARC", pfs: 3.1, note: "no electric conversion system" },
+        { name: "Stellaris", pfs: 2.9, note: "overnight cost not published" }
+    ];
+
+    var POE = 100, XS = 3.125, LIFE = 30, WALL_COST_BASE = 0.3, WALL_TIME_BASE = 0.1;
+    var X_MIN = 0.5, X_MAX = 13, Y_MIN = 0, Y_MAX = 16;
+    var W = 700, H = 380, PAD_L = 56, PAD_R = 20, PAD_T = 16, PAD_B = 44;
+    var plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+
+    function crf(iPct, n) {
+        var r = iPct / 100;
+        if (r <= 0) return 1 / n;
+        return r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    }
+    function qecon(d, iPct, wallMult) {
+        var A1 = 8.76e-3 * POE * d.eta;
+        var A3 = (WALL_COST_BASE * wallMult) / XS;
+        var wallTime = WALL_TIME_BASE * wallMult;
+        var U = 1 / (1 + (d.pfs * wallTime) / XS);
+        var Cfixed = d.cost * crf(iPct, LIFE);
+        var Cgain = A1 * d.pfs * U;
+        var CSrep = A3 * d.pfs * U;
+        return Cgain / (CSrep + Cfixed);
+    }
+
+    function xPos(pfs) {
+        var t = Math.log(pfs / X_MIN) / Math.log(X_MAX / X_MIN);
+        return PAD_L + t * plotW;
+    }
+    function yPos(cost) {
+        var t = (cost - Y_MIN) / (Y_MAX - Y_MIN);
+        return PAD_T + plotH - t * plotH;
+    }
+
+    var root = document.getElementById("qem");
+    if (!root) return;
+    var svg = document.getElementById("qem-svg");
+    var iSlider = document.getElementById("qem-i");
+    var wallSlider = document.getElementById("qem-wall");
+    var iVal = document.getElementById("qem-i-val");
+    var wallVal = document.getElementById("qem-wall-val");
+    var countEl = document.getElementById("qem-count");
+    var detailEl = document.getElementById("qem-detail");
+
+    function svgEl(tag, attrs) {
+        var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+        return el;
+    }
+
+    function showDetail(d, q) {
+        detailEl.hidden = false;
+        detailEl.innerHTML =
+            '<strong>' + d.name + '</strong> (' + d.type + ') &mdash; ' +
+            d.pfs + ' MW/m&sup2;, ' + d.cost + ' M$/m&sup2; overnight areal cost, ' +
+            (d.eta * 100).toFixed(0) + '% conversion efficiency. ' +
+            'Q<tspan>econ</tspan> at current assumptions: <strong>' + q.toFixed(2) + '</strong> (' +
+            (q >= 1 ? "viable" : "not viable") + ').';
+    }
+
+    function render() {
+        var iPct = Number(iSlider.value);
+        var wallMult = Number(wallSlider.value) / 100;
+        iVal.textContent = iPct.toFixed(2) + "%";
+        wallVal.textContent = wallMult.toFixed(2) + "x base";
+
+        svg.innerHTML = "";
+
+        // axes
+        svg.appendChild(svgEl("line", { x1: PAD_L, y1: PAD_T, x2: PAD_L, y2: PAD_T + plotH, stroke: "var(--border)", "stroke-width": 1 }));
+        svg.appendChild(svgEl("line", { x1: PAD_L, y1: PAD_T + plotH, x2: PAD_L + plotW, y2: PAD_T + plotH, stroke: "var(--border)", "stroke-width": 1 }));
+
+        // x ticks (log scale)
+        [1, 2, 5, 10].forEach(function (v) {
+            var x = xPos(v);
+            svg.appendChild(svgEl("line", { x1: x, y1: PAD_T + plotH, x2: x, y2: PAD_T + plotH + 5, stroke: "var(--border)" }));
+            var t = svgEl("text", { x: x, y: PAD_T + plotH + 18, "text-anchor": "middle", class: "qem-axis-label" });
+            t.textContent = v;
+            svg.appendChild(t);
+        });
+        var xTitle = svgEl("text", { x: PAD_L + plotW / 2, y: H - 6, "text-anchor": "middle", class: "qem-axis-title" });
+        xTitle.textContent = "Areal fusion power density, Pf/S (MW/m², log scale)";
+        svg.appendChild(xTitle);
+
+        // y ticks
+        [0, 4, 8, 12, 16].forEach(function (v) {
+            var y = yPos(v);
+            svg.appendChild(svgEl("line", { x1: PAD_L - 5, y1: y, x2: PAD_L, y2: y, stroke: "var(--border)" }));
+            var t = svgEl("text", { x: PAD_L - 9, y: y + 4, "text-anchor": "end", class: "qem-axis-label" });
+            t.textContent = v;
+            svg.appendChild(t);
+        });
+        var yTitle = svgEl("text", { x: -(PAD_T + plotH / 2), y: 14, "text-anchor": "middle", transform: "rotate(-90)", class: "qem-axis-title" });
+        yTitle.textContent = "Overnight areal cost (M$/m²)";
+        svg.appendChild(yTitle);
+
+        // viability threshold reference line (paper's own ~2 MW/m2 finding)
+        var thx = xPos(2);
+        svg.appendChild(svgEl("line", { x1: thx, y1: PAD_T, x2: thx, y2: PAD_T + plotH, stroke: "#d97706", "stroke-width": 1.5, "stroke-dasharray": "4 3" }));
+        var thLabel = svgEl("text", { x: thx + 5, y: PAD_T + 12, class: "qem-threshold-label" });
+        thLabel.textContent = "~2 MW/m² viability threshold";
+        svg.appendChild(thLabel);
+
+        // tick-only devices (no cost data), staggered by proximity so close labels don't overlap
+        var sortedTicks = ticks.slice().sort(function (a, b) { return a.pfs - b.pfs; });
+        sortedTicks.forEach(function (t, idx) {
+            var x = xPos(t.pfs);
+            var closeToPrev = idx > 0 && (x - xPos(sortedTicks[idx - 1].pfs)) < 55;
+            var yOffset = closeToPrev ? 26 : 12;
+            svg.appendChild(svgEl("line", { x1: x, y1: PAD_T + plotH - 8, x2: x, y2: PAD_T + plotH, stroke: "var(--secondary)", "stroke-width": 2 }));
+            var lbl = svgEl("text", { x: x, y: PAD_T + plotH - yOffset, "text-anchor": "middle", class: "qem-tick-label" });
+            lbl.textContent = t.name;
+            svg.appendChild(lbl);
+        });
+
+        var viableCount = 0;
+        designs.forEach(function (d) {
+            var q = qecon(d, iPct, wallMult);
+            if (q >= 1) viableCount++;
+            var x = xPos(d.pfs);
+            var y = yPos(d.cost);
+            var g = svgEl("g", { class: "qem-dot", tabindex: "0" });
+            var circle = svgEl("circle", { cx: x, cy: y, r: 8, class: q >= 1 ? "is-viable" : "is-not-viable" });
+            g.appendChild(circle);
+            var label = svgEl("text", { x: x, y: y - 13, "text-anchor": "middle", class: "qem-dot-label" });
+            label.textContent = d.name;
+            g.appendChild(label);
+            g.addEventListener("click", function () { showDetail(d, q); });
+            g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showDetail(d, q); } });
+            svg.appendChild(g);
+        });
+
+        countEl.textContent = viableCount + " of " + designs.length + " real designs are viable (Q_econ ≥ 1) at these assumptions.";
+    }
+
+    iSlider.addEventListener("input", render);
+    wallSlider.addEventListener("input", render);
+    render();
+})();
+</script>
