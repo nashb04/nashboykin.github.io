@@ -1128,3 +1128,128 @@ figure.headshot img {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
+
+/* --- fusion funding map: bar chart + donut --- */
+.ffm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 20px 0 8px;
+}
+
+.ffm-panel {
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.ffm-panel-donut {
+    flex: 0 1 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ffm-title {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--content);
+}
+
+.ffm-bars {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ffm-bar-label {
+    font-size: 11px;
+    fill: var(--secondary);
+}
+
+.ffm-bar-value {
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--content);
+}
+
+.ffm-bar {
+    fill: var(--secondary);
+}
+
+.ffm-bar-other {
+    fill-opacity: 0.5;
+}
+
+.ffm-donut {
+    width: 180px;
+    height: 180px;
+    display: block;
+}
+
+.ffm-donut-track,
+.ffm-donut-public,
+.ffm-donut-private {
+    fill: none;
+    stroke-width: 28;
+}
+
+.ffm-donut-track {
+    stroke: var(--border);
+}
+
+.ffm-donut-public {
+    stroke: #d97706;
+}
+
+.ffm-donut-private {
+    stroke: #3b82f6;
+}
+
+.ffm-donut-big {
+    font-size: 22px;
+    font-weight: 700;
+    fill: var(--content);
+}
+
+.ffm-donut-small {
+    font-size: 10px;
+    fill: var(--secondary);
+}
+
+.ffm-legend {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--content);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ffm-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ffm-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.ffm-swatch-private {
+    background: #3b82f6;
+}
+
+.ffm-swatch-public {
+    background: #d97706;
+}
+
+.ffm-note {
+    margin: 4px 0 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--secondary);
+}
