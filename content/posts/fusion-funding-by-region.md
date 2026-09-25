@@ -4,8 +4,8 @@ date: 2026-09-25T12:00:00-04:00
 draft: false
 tags: ["analysis", "fusion", "policy", "funding"]
 cover:
-  image: "images/fusion3.png"
-  alt: "Atom icon"
+  image: "images/funding-icon.png"
+  alt: "Handshake icon"
 ---
 
 A conversation with Rachel Bielajew, Head of Research at Rutherford Energy Ventures, and Riley Moeykins, Associate Technical Analyst there — Rutherford is a fusion-focused consulting firm, apparently the first of its kind — is where this one actually came from. Most of the conversation was about capital: their pitch is that financing structure, not physics, is one of the biggest levers determining which fusion bets actually make it to a commercial plant, and they specifically suggested this comparison — how differently the US, UK, and Europe handle that lever. The short version: they aren't just racing toward fusion at different speeds, they're running the race through three genuinely different institutional playbooks for who supplies the capital, and on what terms.
